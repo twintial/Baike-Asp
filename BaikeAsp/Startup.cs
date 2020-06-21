@@ -42,7 +42,7 @@ namespace BaikeAsp
             {
                 options.UseMySql(Configuration.GetConnectionString("BaikeDatabase")).UseLoggerFactory(efLogger);
             });
-
+            services.AddCors(options => options.AddPolicy("cors", p => p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
             services.AddScoped<IUserReposity, UserReposity>();
         }
 
@@ -67,6 +67,8 @@ namespace BaikeAsp
             }
 
             app.UseSession();
+
+            app.UseCors("cors");
 
             app.UseRouting();
 
