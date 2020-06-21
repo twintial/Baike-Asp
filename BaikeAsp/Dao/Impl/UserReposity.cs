@@ -29,6 +29,13 @@ namespace BaikeAsp.Dao.Impl
                 .CountAsync();
         }
 
+        public async Task<BkUser> GetUserByAccount(string account)
+        {
+            return await _context.BkUser
+                .Where(x => x.Account.Equals(account))
+                .FirstAsync();
+        }
+
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() >= 0;

@@ -19,10 +19,12 @@ namespace BaikeAsp.Controllers
     public class BkUsersController : ControllerBase
     {
         private readonly IUserReposity _userReposity;
+        private readonly IUserInfoReposity _userInfoReposity;
 
-        public BkUsersController(IUserReposity userReposity)
+        public BkUsersController(IUserReposity userReposity, IUserInfoReposity userInfoReposity)
         {
             _userReposity = userReposity ?? throw new ArgumentNullException(nameof(userReposity));
+            _userInfoReposity = userInfoReposity ?? throw new ArgumentNullException(nameof(userInfoReposity));
         }
 
         [HttpPost("register")]
@@ -32,7 +34,7 @@ namespace BaikeAsp.Controllers
             if (count > 0)
             {
                 // 先这样写
-                return Ok(CommonResult.Fail("acount or nickName have been used")); 
+                return Ok(CommonResult.Fail("account or nickName have been used")); 
             }
             string salt = "baike";
             BkUser user = new BkUser { Account = info.Account, Password = MD5Util.GenerateMD5(info.Password, salt), Salt = salt };
@@ -43,90 +45,37 @@ namespace BaikeAsp.Controllers
             return Ok(CommonResult.Success("register success"));
         }
 
-        //// GET: api/BkUsers
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<BkUser>>> GetBkUser()
-        //{
-        //    return await _context.BkUser.ToListAsync();
-        //}
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] BKLoginInfo loginInfo)
+        {
+            if(HttpContext.Session.GetString("user") != null)
+            {
+                return Ok(CommonResult.Fail("already login"));
+            }
+            BkUser user = await _userReposity.GetUserByAccount(loginInfo.Account);
+            if (user == null)
+            {
+                return Ok(CommonResult.Fail("e - mail address don't exist"));
+            }
+            if (await _userInfoReposity.GetState(user.UId) == 0)
+            {
+                return Ok(CommonResult.Fail("you have been banned, please contact administrator first"));
+            }
+            if (user.Password == MD5Util.GenerateMD5(loginInfo.Password, user.Salt))
+            {
+                HttpContext.Session.SetString("user", user.Account);
+                return Ok(CommonResult.Success(user.Account));
+            }
+            else
+            {
+                return Ok(CommonResult.Fail("password error"));
+            }
+        }
 
-        //// GET: api/BkUsers/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<BkUser>> GetBkUser(int id)
-        //{
-        //    var bkUser = await _context.BkUser.FindAsync(id);
-
-        //    if (bkUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return bkUser;
-        //}
-
-        //// PUT: api/BkUsers/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutBkUser(int id, BkUser bkUser)
-        //{
-        //    if (id != bkUser.UId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(bkUser).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!BkUserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/BkUsers
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<BkUser>> PostBkUser(BkUser bkUser)
-        //{
-        //    _context.BkUser.Add(bkUser);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetBkUser", new { id = bkUser.UId }, bkUser);
-        //}
-
-        //// DELETE: api/BkUsers/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<BkUser>> DeleteBkUser(int id)
-        //{
-        //    var bkUser = await _context.BkUser.FindAsync(id);
-        //    if (bkUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.BkUser.Remove(bkUser);
-        //    await _context.SaveChangesAsync();
-
-        //    return bkUser;
-        //}
-
-        //private bool BkUserExists(int id)
-        //{
-        //    return _context.BkUser.Any(e => e.UId == id);
-        //}
+        [HttpPost("logout")]
+        public void logout()
+        {
+            HttpContext.Session.Clear();
+        }
     }
 }
