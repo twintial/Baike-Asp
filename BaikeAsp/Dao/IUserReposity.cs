@@ -8,7 +8,9 @@ namespace BaikeAsp.Dao
 {
     public interface IUserReposity
     {
-        int GetUserByAccount(string account);
+        Task<int> CheckUserByAccountAndNickNameAsync(string account, string nickName);
+
+        void AddUser(BkUser user);
 
         Task<bool> SaveAsync();
     }

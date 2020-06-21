@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BaikeAsp.Models;
 using BaikeAsp.Dto;
 using BaikeAsp.Dao;
+using BaikeAsp.Util;
+using System.Runtime.InteropServices;
 
 namespace BaikeAsp.Controllers
 {
@@ -25,8 +27,19 @@ namespace BaikeAsp.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] BKRegisterInfo info)
         {
-            int count = _userReposity.GetUserByAccount(info.Account);
-            return Ok(count);
+            int count = await _userReposity.CheckUserByAccountAndNickNameAsync(info.Account, info.NickName);
+            if (count > 0)
+            {
+                // 先这样写
+                return BadRequest(new { error = "acount or nickName have been used" });
+            }
+            string salt = "baike";
+            BkUser user = new BkUser { Account = info.Account, Password = MD5Util.GenerateMD5(info.Password, salt), Salt = salt };
+            BkUserInfo userInfo = new BkUserInfo { NickName = info.NickName, State = 1, Icon = "user_default.jpg", BackgroundIcon = "back_default.jpg" };
+            user.BkUserInfo = userInfo;
+            _userReposity.AddUser(user);
+            await _userReposity.SaveAsync();
+            return Ok("注册成功");
         }
 
         //// GET: api/BkUsers

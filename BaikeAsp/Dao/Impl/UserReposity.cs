@@ -17,11 +17,16 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public int GetUserByAccount(string account)
+        public void AddUser(BkUser user)
         {
-            return _context.BkUser
-                .Where(x => x.Account.Equals(account))
-                .Count();
+            _context.BkUser.Add(user);
+        }
+
+        public async Task<int> CheckUserByAccountAndNickNameAsync(string account, string nickName)
+        {
+            return await _context.BkUser
+                .Where(x => x.Account.Equals(account) || x.BkUserInfo.NickName.Equals(nickName))
+                .CountAsync();
         }
 
         public async Task<bool> SaveAsync()
