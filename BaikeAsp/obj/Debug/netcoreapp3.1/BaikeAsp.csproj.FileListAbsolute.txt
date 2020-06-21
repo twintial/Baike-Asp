@@ -149,5 +149,6 @@ D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\zh-Hant\Microso
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csprojAssemblyReference.cache
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\AutoMapper.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Debug.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csproj.CoreCompileInputs.cache
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.MvcApplicationPartsAssemblyInfo.cache

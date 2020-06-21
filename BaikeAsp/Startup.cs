@@ -1,4 +1,6 @@
 using AutoMapper;
+using BaikeAsp.Dao;
+using BaikeAsp.Dao.Impl;
 using BaikeAsp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,12 +9,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace BaikeAsp
 {
     public class Startup
     {
+        public static readonly ILoggerFactory efLogger = LoggerFactory.Create(builder =>
+        {
+            builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information).AddConsole();
+        });
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,13 +31,19 @@ namespace BaikeAsp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache().AddSession();
             services.AddControllers(setup =>
             {
                 setup.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddDbContext<BaikeContext>(options => options.UseMySql(Configuration.GetConnectionString("BaikeDatabase")));
+            services.AddDbContext<BaikeContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("BaikeDatabase")).UseLoggerFactory(efLogger);
+            });
+
+            services.AddScoped<IUserReposity, UserReposity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +65,8 @@ namespace BaikeAsp
                     });
                 });
             }
+
+            app.UseSession();
 
             app.UseRouting();
 
