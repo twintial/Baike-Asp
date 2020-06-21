@@ -40,5 +40,13 @@ namespace BaikeAsp.Dao.Impl
         {
             return await _context.SaveChangesAsync() >= 0;
         }
+
+        public async Task<List<BkUser>> SearchUsers(string nickname)
+        {
+            return await _context.BkUser
+                .Where(x => EF.Functions.Like(x.BkUserInfo.NickName, $"%{nickname}%"))
+                .Include(x => x.BkUserInfo)
+                .ToListAsync();
+        }
     }
 }

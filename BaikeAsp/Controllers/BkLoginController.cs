@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BaikeAsp.Models;
 using BaikeAsp.Dto;
 using BaikeAsp.Dao;
 using BaikeAsp.Util;
-using System.Runtime.InteropServices;
 using BaikeAsp.Common;
 
 namespace BaikeAsp.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class BkUsersController : ControllerBase
+    public class BkLoginController : ControllerBase
     {
         private readonly IUserReposity _userReposity;
         private readonly IUserInfoReposity _userInfoReposity;
 
-        public BkUsersController(IUserReposity userReposity, IUserInfoReposity userInfoReposity)
+        public BkLoginController(IUserReposity userReposity, IUserInfoReposity userInfoReposity)
         {
             _userReposity = userReposity ?? throw new ArgumentNullException(nameof(userReposity));
             _userInfoReposity = userInfoReposity ?? throw new ArgumentNullException(nameof(userInfoReposity));
@@ -48,7 +44,7 @@ namespace BaikeAsp.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] BKLoginInfo loginInfo)
         {
-            if(HttpContext.Session.GetString("user") != null)
+            if(HttpContext.Session.GetInt32("userID") != null)
             {
                 return Ok(CommonResult.Fail("already login"));
             }
@@ -63,7 +59,7 @@ namespace BaikeAsp.Controllers
             }
             if (user.Password == MD5Util.GenerateMD5(loginInfo.Password, user.Salt))
             {
-                HttpContext.Session.SetString("user", user.Account);
+                HttpContext.Session.SetInt32("userID", user.UId);
                 return Ok(CommonResult.Success(user.Account));
             }
             else
