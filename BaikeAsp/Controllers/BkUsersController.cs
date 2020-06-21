@@ -10,6 +10,7 @@ using BaikeAsp.Dto;
 using BaikeAsp.Dao;
 using BaikeAsp.Util;
 using System.Runtime.InteropServices;
+using BaikeAsp.Common;
 
 namespace BaikeAsp.Controllers
 {
@@ -31,7 +32,7 @@ namespace BaikeAsp.Controllers
             if (count > 0)
             {
                 // 先这样写
-                return BadRequest(new { error = "acount or nickName have been used" });
+                return Ok(CommonResult.Fail("acount or nickName have been used")); 
             }
             string salt = "baike";
             BkUser user = new BkUser { Account = info.Account, Password = MD5Util.GenerateMD5(info.Password, salt), Salt = salt };
@@ -39,7 +40,7 @@ namespace BaikeAsp.Controllers
             user.BkUserInfo = userInfo;
             _userReposity.AddUser(user);
             await _userReposity.SaveAsync();
-            return Ok("注册成功");
+            return Ok(CommonResult.Success("register success"));
         }
 
         //// GET: api/BkUsers
