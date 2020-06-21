@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\projects\\vsProjects\\BaikeAsp\\BaikeAsp\\BaikeAsp.csproj": {}
+    "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\BaikeAsp.csproj": {}
   },
   "projects": {
-    "D:\\projects\\vsProjects\\BaikeAsp\\BaikeAsp\\BaikeAsp.csproj": {
+    "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\BaikeAsp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\projects\\vsProjects\\BaikeAsp\\BaikeAsp\\BaikeAsp.csproj",
+        "projectUniqueName": "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\BaikeAsp.csproj",
         "projectName": "BaikeAsp",
-        "projectPath": "D:\\projects\\vsProjects\\BaikeAsp\\BaikeAsp\\BaikeAsp.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\projects\\vsProjects\\BaikeAsp\\BaikeAsp\\obj\\",
+        "projectPath": "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\BaikeAsp.csproj",
+        "packagesPath": "C:\\Users\\19134\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\19134\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

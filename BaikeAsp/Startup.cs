@@ -44,6 +44,10 @@ namespace BaikeAsp
             });
             services.AddCors(options => options.AddPolicy("cors", p => p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
             services.AddScoped<IUserReposity, UserReposity>();
+            services.AddScoped<IUserInfoReposity, UserInfoReposity>();
+            services.AddScoped<IInteractiveVideoReposity, InteractiveVideoReposity>();
+            services.AddScoped<IFavouriteReposity, FavouriteReposity>();
+            services.AddScoped<ICollectionReposity, CollectionReposity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
