@@ -20,7 +20,10 @@ namespace BaikeAsp
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseKestrel(options => {
+                        // 接触文件上传限制
+                        options.Limits.MaxRequestBodySize = null;
+                    });
                 });
     }
 }

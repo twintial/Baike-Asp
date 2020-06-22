@@ -1,7 +1,11 @@
-﻿using BaikeAsp.Dao;
+﻿using BaikeAsp.Common;
+using BaikeAsp.Dao;
+using BaikeAsp.Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,23 +38,47 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpGet("playVolume")]
-        public async Task<IActionResult> selectByPlayVolume()
+        public async Task<IActionResult> SelectByPlayVolume()
         {
-            var videos =  await _interactiveVideoReposity.selectByPlayVolume();
+            var videos =  await _interactiveVideoReposity.SelectByPlayVolume();
             return Ok(videos);
         }
 
         // 有问题，之后解决
         [HttpGet("time")]
-        public async Task<IActionResult> selectByTime()
+        public async Task<IActionResult> SelectByTime()
         {
-            var videos = await _interactiveVideoReposity.selectByTime();
+            var videos = await _interactiveVideoReposity.SelectByTime();
             return Ok(videos);
         }
+
         [HttpGet("video/next/{videoId}")]
-        public async Task<IActionResult> findNextVideos(int videoId)
+        public async Task<IActionResult> FindNextVideos(int videoId)
         {
-            return Ok(videos);
+            var nextVideos = await _interactiveVideoReposity.FindNextVideos(videoId);
+            var url = await _interactiveVideoReposity.GetUrlByVId(videoId);
+            return Ok(CommonResult.Success(nextVideos, url));
+        }
+
+        [HttpPost("video/upload")]
+        public async Task<IActionResult> VideoUpload([FromForm(Name = "file")] IFormFile file)
+        {
+            var result = await FileUtil.CreateTempFile(file);
+            return StatusCode(200, result);
+        }
+
+        [HttpPost("cover/upload")]
+        public async Task<IActionResult> CoverUpload([FromForm(Name = "file")] IFormFile file)
+        {
+            var result = await FileUtil.CreateTempFile(file);
+            // 用用看这种形式
+            return StatusCode(200, result);
+        }
+        [HttpDelete("upload/{uuid}/{type}")]
+        public IActionResult DeleteTemp(string uuid, string type)
+        {
+            bool success = FileUtil.DeleteTempFile($@"{Path.Combine(ResourcePath.TEMP, $@"{uuid}.{type}")}");
+            return StatusCode(200, success);
         }
     }
 }

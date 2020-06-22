@@ -14,10 +14,12 @@ namespace BaikeAsp.Dao
 
         Task<int> GetCount(string searchName, string tag);
 
-        Task<List<BKSearchInterVideo>> selectByPlayVolume();
+        Task<List<BKSearchInterVideo>> SelectByPlayVolume();
 
-        Task<List<BKSearchInterVideo>> selectByTime();
+        Task<List<BKSearchInterVideo>> SelectByTime();
 
-        Task<List<BKNextVideoViewModel>> findNextVideos(int videoId);
+        Task<List<BKNextVideoViewModel>> FindNextVideos(int videoId);
+
+        Task<string> GetUrlByVId(int videoId);
     }
 }

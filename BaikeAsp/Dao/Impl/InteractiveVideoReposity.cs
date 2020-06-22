@@ -18,7 +18,7 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public Task<List<BKNextVideoViewModel>> findNextVideos(int videoId)
+        public Task<List<BKNextVideoViewModel>> FindNextVideos(int videoId)
         {
             var query = from nv in _context.BkNextVideo
                         where nv.VideoId == videoId
@@ -28,7 +28,7 @@ namespace BaikeAsp.Dao.Impl
                             VideoID = nv.VideoId,
                             NextVideoID = nv.NextVideoId
                         };
-            
+            return query.ToListAsync();
         }
 
         public async Task<int> GetCount(string searchName, string tag)
@@ -43,6 +43,14 @@ namespace BaikeAsp.Dao.Impl
                 queryExpression = queryExpression.Where(x => EF.Functions.Like(x.VideoName, $"%{searchName}%"));
             }
             return await queryExpression.Where(x => x.State == 2).CountAsync();
+        }
+
+        public Task<string> GetUrlByVId(int videoId)
+        {
+            var query = from v in _context.BkVideo
+                        where v.VideoId == videoId
+                        select v.VideoUrl;
+            return query.FirstAsync();
         }
 
         public int GetVideoCountByUid(int uid)
@@ -82,7 +90,7 @@ namespace BaikeAsp.Dao.Impl
                 .ToListAsync();
         }
 
-        public Task<List<BKSearchInterVideo>> selectByPlayVolume()
+        public Task<List<BKSearchInterVideo>> SelectByPlayVolume()
         {
             return _context.BkInteractiveVideo.Join(_context.BkUserInfo, left => left.UId, right => right.UId, (left, right) => new BKSearchInterVideo
                 {
@@ -106,7 +114,7 @@ namespace BaikeAsp.Dao.Impl
                 .ToListAsync();
         }
 
-        public Task<List<BKSearchInterVideo>> selectByTime()
+        public Task<List<BKSearchInterVideo>> SelectByTime()
         {
             return _context.BkInteractiveVideo.Join(_context.BkUserInfo, left => left.UId, right => right.UId, (left, right) => new BKSearchInterVideo
                 {
@@ -125,7 +133,7 @@ namespace BaikeAsp.Dao.Impl
                     NickName = right.NickName
                 })
                 .Where(x => x.State == 2)
-                .OrderByDescending(x => x.UploadTime)
+                .OrderByDescending(x => x.PraisePoint)
                 .Take(12)
                 .ToListAsync();
         }

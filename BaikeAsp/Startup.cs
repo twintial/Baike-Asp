@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 namespace BaikeAsp
 {
@@ -70,6 +72,13 @@ namespace BaikeAsp
                     });
                 });
             }
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                // ÅäÖÃ¾²Ì¬Ä¿Â¼
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "resources")),
+                RequestPath = "",
+            });
 
             app.UseSession();
 
