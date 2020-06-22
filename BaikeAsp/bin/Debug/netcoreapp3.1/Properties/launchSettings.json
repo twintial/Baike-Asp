@@ -4,7 +4,7 @@
     "BaikeAsp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/BKAdmins",
+      //"launchUrl": "api/BKAdmins",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

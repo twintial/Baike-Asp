@@ -1,4 +1,5 @@
-﻿using BaikeAsp.Models;
+﻿using BaikeAsp.Dto;
+using BaikeAsp.Models;
 using BaikeAsp.Util;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,25 @@ namespace BaikeAsp.Dao.Impl
                 .CountAsync();
         }
 
+        public async Task<PagedList<BKInterVidoeInfoWithBrowseHistory>> selectBrowseHistoryByUid(int uid, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                         join gl in _context.BkBrowseHistory on st.InterVideoId equals gl.WatchVideoId
+                         where gl.UId.Equals(uid) && st.State != 0
+                         orderby gl.WatchDate descending
+                         select new BKInterVidoeInfoWithBrowseHistory
+                         {
+                             InterVideoId = st.InterVideoId,
+                             VideoName = st.VideoName,
+                             Introduction = st.Introduction,
+                             PlayVolume = st.PlayVolume,
+                             Icon = st.Icon,
+                             WatchDate = gl.WatchDate
+                         });
+
+            return await PagedList<BKInterVidoeInfoWithBrowseHistory>.Create(query, pageNum, pageSize);
+        }
+
         public async Task<PagedList<BkInteractiveVideo>> selectFavVideoByUid(int uid, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
@@ -33,22 +53,15 @@ namespace BaikeAsp.Dao.Impl
                          select st);
 
             return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+        }
 
-            //(interVideo, collection) => new BkInteractiveVideo
-            //{
-            //    UId = interVideo.UId,
-            //    InterVideoId = interVideo.InterVideoId,
-            //    VideoName = interVideo.VideoName,
-            //    Introduction = interVideo.Introduction,
-            //    PlayVolume = interVideo.PlayVolume,
-            //    PraisePoint = interVideo.PraisePoint,
-            //    CollectPoint = interVideo.CollectPoint,
-            //    Tag = interVideo.Tag,
-            //    State = interVideo.State,
-            //    UploadTime = interVideo.UploadTime,
-            //    Icon = interVideo.Icon,
-            //    InitVideoId =
-            //        }
+        public async Task<PagedList<BkInteractiveVideo>> selectHisVideoByUid(int uid, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                         where st.UId.Equals(uid) && st.State.Equals(2)
+                         select st);
+
+            return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
         }
     }
 }

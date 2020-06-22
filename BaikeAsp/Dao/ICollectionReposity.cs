@@ -13,5 +13,6 @@ namespace BaikeAsp.Dao
         void deleteFavVideoByID(int uid, int favid);
 
         Task<bool> SaveAsync();
+        void insertFavVideoByID(int uid, int vid);
     }
 }

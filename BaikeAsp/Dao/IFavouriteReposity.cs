@@ -9,5 +9,8 @@ namespace BaikeAsp.Dao
     {
         Task<int> getUserFollowerNum(int uid);
         Task<int> getUsersFollowNum(int uid);
+        Task<bool> SaveAsync();
+        void deleteUsersFollowByID(int uid, int followid);
+        void insertUsersFollowByID(int uid, int followid);
     }
 }

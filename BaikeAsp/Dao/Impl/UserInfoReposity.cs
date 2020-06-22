@@ -17,9 +17,9 @@ namespace BaikeAsp.Dao.Impl
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        public async Task<IEnumerable<BkUserInfo>> GetBkUserInfo(int uid)
+        public async Task<BkUserInfo> GetBkUserInfo(int uid)
         {
-            return await _context.BkUserInfo.Where(x => x.UId.Equals(uid)).ToListAsync();
+            return await _context.BkUserInfo.Where(x => x.UId.Equals(uid)).FirstOrDefaultAsync();
         }
 
         public async Task<PagedList<BKUserFollowersDto>> selectUserFollowersByUid(int uid, int pageNum, int pageSize)
@@ -50,6 +50,31 @@ namespace BaikeAsp.Dao.Impl
                          });
 
             return await PagedList<BKUserFollowersDto>.Create(query, pageNum, pageSize);
+        }
+
+        public async Task<int> GetState(int uID)
+        {
+            return await _context.BkUserInfo
+                .Where(x => x.UId == uID)
+                .Select(x => x.State)
+                .FirstAsync();
+        }
+
+        public async void updateUserInforByID(int uid, string newNickName, string newIntroduction)
+        {
+            BkUserInfo userInfo = await _context.BkUserInfo
+                .Where(x => x.UId.Equals(uid))
+                .FirstOrDefaultAsync();
+
+            userInfo.NickName = newNickName;
+            userInfo.Introduction = newIntroduction;
+
+            _context.Entry(userInfo).State = EntityState.Modified;
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
         }
     }
 }

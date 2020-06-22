@@ -1,4 +1,5 @@
 ﻿using BaikeAsp.Models;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
@@ -29,6 +30,16 @@ namespace BaikeAsp.Dao.Impl
             return await _context.BkCollection
                 .Where(x => x.UId.Equals(uid))
                 .CountAsync();
+        }
+
+        public void insertFavVideoByID(int uid, int vid)
+        {
+            BkCollection bkCollection = new BkCollection
+            {
+                UId = uid,
+                FavVideoId = vid
+            };
+            _context.BkCollection.AddAsync(bkCollection);
         }
 
         public async Task<long> isCollect(int uid, int vid)

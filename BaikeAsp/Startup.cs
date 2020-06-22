@@ -48,6 +48,7 @@ namespace BaikeAsp
             services.AddScoped<IInteractiveVideoReposity, InteractiveVideoReposity>();
             services.AddScoped<IFavouriteReposity, FavouriteReposity>();
             services.AddScoped<ICollectionReposity, CollectionReposity>();
+            services.AddScoped<IBrowseHistoryReposity, BrowseHistoryReposity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
