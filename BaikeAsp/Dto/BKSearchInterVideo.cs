@@ -16,7 +16,7 @@ namespace BaikeAsp.Dto
         public int CollectPoint { get; set; }
         public string Tag { get; set; }
         public int State { get; set; }
-        public DateTime UploadTime { get; set; }
+        public long UploadTime { get; set; }
         public string Icon { get; set; }
         public int? InitVideoId { get; set; }
         public string NickName { get; set; }

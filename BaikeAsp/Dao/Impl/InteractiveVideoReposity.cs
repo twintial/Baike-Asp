@@ -1,5 +1,6 @@
 ﻿using BaikeAsp.Dto;
 using BaikeAsp.Models;
+using BaikeAsp.Util;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -59,12 +60,60 @@ namespace BaikeAsp.Dao.Impl
                     PraisePoint = left.PraisePoint,
                     Tag = left.Tag,
                     Uid = left.UId,
-                    UploadTime = left.UploadTime,
+                    UploadTime = TimeConvert.ConvertDateTimeToLong(left.UploadTime),
                     NickName = right.NickName
                 })
                 .Where(x => x.State == 2)
                 .Skip(size * (page - 1))
                 .Take(size)
+                .ToListAsync();
+        }
+
+        public Task<List<BKSearchInterVideo>> selectByPlayVolume()
+        {
+            return _context.BkInteractiveVideo.Join(_context.BkUserInfo, left => left.UId, right => right.UId, (left, right) => new BKSearchInterVideo
+                {
+                    CollectPoint = left.CollectPoint,
+                    Icon = left.Icon,
+                    VideoName = left.VideoName,
+                    InitVideoId = left.InitVideoId,
+                    State = left.State,
+                    InterVideoId = left.InterVideoId,
+                    Introduction = left.Introduction,
+                    PlayVolume = left.PlayVolume,
+                    PraisePoint = left.PraisePoint,
+                    Tag = left.Tag,
+                    Uid = left.UId,
+                    UploadTime = TimeConvert.ConvertDateTimeToLong(left.UploadTime),
+                    NickName = right.NickName
+                })
+                .Where(x => x.State == 2)
+                .OrderByDescending(x => x.PlayVolume)
+                .Take(12)
+                .ToListAsync();
+        }
+
+        public Task<List<BKSearchInterVideo>> selectByTime()
+        {
+            return _context.BkInteractiveVideo.Join(_context.BkUserInfo, left => left.UId, right => right.UId, (left, right) => new BKSearchInterVideo
+                {
+                    CollectPoint = left.CollectPoint,
+                    Icon = left.Icon,
+                    VideoName = left.VideoName,
+                    InitVideoId = left.InitVideoId,
+                    State = left.State,
+                    InterVideoId = left.InterVideoId,
+                    Introduction = left.Introduction,
+                    PlayVolume = left.PlayVolume,
+                    PraisePoint = left.PraisePoint,
+                    Tag = left.Tag,
+                    Uid = left.UId,
+                    UploadTime = TimeConvert.ConvertDateTimeToLong(left.UploadTime),
+                    NickName = right.NickName
+                })
+                .Where(x => x.State == 2)
+                .OrderByDescending(x => x.UploadTime)
+                .Take(12)
                 .ToListAsync();
         }
     }

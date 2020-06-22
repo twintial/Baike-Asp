@@ -32,5 +32,25 @@ namespace BaikeAsp.Controllers
             var count = await _interactiveVideoReposity.GetCount("", tag);
             return Ok(new { List = videos, PageNum = count });
         }
+
+        [HttpGet("playVolume")]
+        public async Task<IActionResult> selectByPlayVolume()
+        {
+            var videos =  await _interactiveVideoReposity.selectByPlayVolume();
+            return Ok(videos);
+        }
+
+        // 有问题，之后解决
+        [HttpGet("time")]
+        public async Task<IActionResult> selectByTime()
+        {
+            var videos = await _interactiveVideoReposity.selectByTime();
+            return Ok(videos);
+        }
+        [HttpGet("video/next/{videoId}")]
+        public async Task<IActionResult> findNextVideos(int videoId)
+        {
+            return Ok(videos);
+        }
     }
 }
