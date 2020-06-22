@@ -18,6 +18,6 @@ namespace BaikeAsp.Dao
 
         Task<List<BKSearchInterVideo>> selectByTime();
 
-        Task<>
+        Task<List<BKNextVideoViewModel>> findNextVideos(int videoId);
     }
 }

@@ -18,6 +18,19 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
+        public Task<List<BKNextVideoViewModel>> findNextVideos(int videoId)
+        {
+            var query = from nv in _context.BkNextVideo
+                        where nv.VideoId == videoId
+                        select new BKNextVideoViewModel
+                        {
+                            Choice = nv.Choice,
+                            VideoID = nv.VideoId,
+                            NextVideoID = nv.NextVideoId
+                        };
+            return 
+        }
+
         public async Task<int> GetCount(string searchName, string tag)
         {
             var queryExpression = _context.BkInteractiveVideo as IQueryable<BkInteractiveVideo>;
