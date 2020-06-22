@@ -43,8 +43,12 @@ namespace BaikeAsp
                 options.UseMySql(Configuration.GetConnectionString("BaikeDatabase")).UseLoggerFactory(efLogger);
             });
             services.AddCors(options => options.AddPolicy("cors", p => p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
+
             services.AddScoped<IUserReposity, UserReposity>();
             services.AddScoped<IUserInfoReposity, UserInfoReposity>();
+            services.AddScoped<ICollectionReposity, CollectionReposity>();
+            services.AddScoped<IFavouriteReposity, FavouriteReposity>();
+            services.AddScoped<IInteractiveVideoReposity, InteractiveVideoReposity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

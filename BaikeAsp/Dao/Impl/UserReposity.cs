@@ -29,6 +29,17 @@ namespace BaikeAsp.Dao.Impl
                 .CountAsync();
         }
 
+        public async Task<int> GetCount(string nickname)
+        {
+            var queryExpression = _context.BkUser as IQueryable<BkUser>;
+            if (nickname != null)
+            {
+                queryExpression = queryExpression
+                    .Where(x => EF.Functions.Like(x.BkUserInfo.NickName, $"%{nickname}%"));
+            }
+            return await queryExpression.CountAsync();
+        }
+
         public async Task<BkUser> GetUserByAccount(string account)
         {
             return await _context.BkUser
@@ -41,11 +52,22 @@ namespace BaikeAsp.Dao.Impl
             return await _context.SaveChangesAsync() >= 0;
         }
 
-        public async Task<List<BkUser>> SearchUsers(string nickname)
+        public async Task<List<BkUser>> SearchAllUsers(int page, int size)
+        {
+            return await _context.BkUser
+                 .Include(x => x.BkUserInfo)
+                 .Skip(size * (page - 1))
+                 .Take(size)
+                 .ToListAsync();
+        }
+
+        public async Task<List<BkUser>> SearchUsers(string nickname, int page, int size)
         {
             return await _context.BkUser
                 .Where(x => EF.Functions.Like(x.BkUserInfo.NickName, $"%{nickname}%"))
                 .Include(x => x.BkUserInfo)
+                .Skip(size * (page - 1))
+                .Take(size)
                 .ToListAsync();
         }
     }
