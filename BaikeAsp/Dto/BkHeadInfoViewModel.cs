@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaikeAsp.Dto
 {
-    public partial class BkHeadInfoViewModel
+    public partial class BKHeadInfoViewModel
     {
         public int uploadVideoNum { get; set; }
 

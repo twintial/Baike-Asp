@@ -16,5 +16,8 @@ namespace BaikeAsp.Dao
         public Task<int> GetState(int uID);
         void updateUserInforByID(int uid, string newNickName, string newIntroduction);
         Task<bool> SaveAsync();
+        Task<PagedList<BKUserState>> selectByName(string title, int state, int pageNum, int pageSize);
+        Task<PagedList<BKUserState>> selectByTime(string title, int state, int pageNum, int pageSize);
+        void changeUserState(int uid);
     }
 }

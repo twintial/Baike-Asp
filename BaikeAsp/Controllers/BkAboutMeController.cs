@@ -19,7 +19,7 @@ namespace BaikeAsp.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class AboutMeController : ControllerBase
+    public class BkAboutMeController : ControllerBase
     {
         private readonly ICollectionReposity collectionReposity;
         private readonly IFavouriteReposity favouriteReposity;
@@ -27,7 +27,7 @@ namespace BaikeAsp.Controllers
         private readonly IInteractiveVideoReposity interactiveVideoReposity;
         private readonly IBrowseHistoryReposity browseHistoryReposity;
 
-        public AboutMeController(ICollectionReposity collection, IFavouriteReposity favourite,
+        public BkAboutMeController(ICollectionReposity collection, IFavouriteReposity favourite,
             IUserInfoReposity userInfo, IInteractiveVideoReposity interactiveVideo, IBrowseHistoryReposity browseHistory)
         {
             collectionReposity = collection ?? throw new ArgumentNullException(nameof(collectionReposity));
@@ -45,7 +45,7 @@ namespace BaikeAsp.Controllers
             {
                 return NotFound(CommonResult.Fail("Please Login First"));
             }
-            BkHeadInfoViewModel bkHeadInfoViewModel = new BkHeadInfoViewModel();
+            BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
                 BkUserInfo bkUserInfo = await userInfoReposity.GetBkUserInfo(uid);

@@ -19,6 +19,18 @@ namespace BaikeAsp.Dao.Impl
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
+
+        public async void changeVideoState(int vid)
+        {
+            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+                                                        .Where(x => x.InterVideoId.Equals(vid))
+                                                        .FirstOrDefaultAsync();
+
+            bkInteractiveVideo.State = 2 - bkInteractiveVideo.State;
+
+            _context.Entry(bkInteractiveVideo).State = EntityState.Modified;
+        }
+
         public async Task<int> getUploadVideoNum(int uid)
         {
             return await _context.BkInteractiveVideo
@@ -45,6 +57,45 @@ namespace BaikeAsp.Dao.Impl
             return await PagedList<BKInterVidoeInfoWithBrowseHistory>.Create(query, pageNum, pageSize);
         }
 
+        public async Task<PagedList<BKInterVideoViewModel>> selectByCollectVolume(string title, int state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                        where st.State.Equals(state) && st.VideoName.Contains(title)
+                        orderby st.CollectPoint descending
+                        select new BKInterVideoViewModel
+                        {
+                            bkInteractiveVideo = st
+                        });
+
+            return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
+        }
+
+        public async Task<PagedList<BKInterVideoViewModel>> selectByPlayVolume(string title, int state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                         where st.State.Equals(state) && st.VideoName.Contains(title)
+                         orderby st.PlayVolume descending
+                         select new BKInterVideoViewModel
+                         {
+                             bkInteractiveVideo = st
+                         });
+
+            return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
+        }
+
+        public async Task<PagedList<BKInterVideoViewModel>> selectByTime(string title, int state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                         where st.State.Equals(state) && st.VideoName.Contains(title)
+                         orderby st.UploadTime descending
+                         select new BKInterVideoViewModel
+                         {
+                             bkInteractiveVideo = st
+                         });
+
+            return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
+        }
+
         public async Task<PagedList<BkInteractiveVideo>> selectFavVideoByUid(int uid, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
@@ -62,6 +113,39 @@ namespace BaikeAsp.Dao.Impl
                          select st);
 
             return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public async void updateInterVideoStartVideo(int intervideoid, int initvideoid)
+        {
+            BkInteractiveVideo interactiveVideo = await _context.BkInteractiveVideo
+                                                    .Where(x => x.InterVideoId.Equals(intervideoid))
+                                                    .FirstOrDefaultAsync();
+
+            interactiveVideo.InitVideoId = initvideoid;
+            interactiveVideo.State = 2;
+
+            _context.Entry(interactiveVideo).State = EntityState.Modified;
+        }
+
+        public async Task<int> selectInterVideoStateByID(int intervideoid)
+        {
+            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+                                                        .Where(x => x.InterVideoId.Equals(intervideoid))
+                                                        .FirstOrDefaultAsync();
+            return bkInteractiveVideo.State;
+        }
+
+        public async Task<int?> selectInitVideoIDByID(int intervideoid)
+        {
+            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+                                                        .Where(x => x.InterVideoId.Equals(intervideoid))
+                                                        .FirstOrDefaultAsync();
+            return bkInteractiveVideo.InitVideoId;
         }
     }
 }

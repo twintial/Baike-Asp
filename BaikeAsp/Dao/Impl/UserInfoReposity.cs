@@ -76,5 +76,50 @@ namespace BaikeAsp.Dao.Impl
         {
             return await _context.SaveChangesAsync() >= 0;
         }
+
+        public async Task<PagedList<BKUserState>> selectByName(string title, int state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkUserInfo
+                         where st.State.Equals(state) && st.NickName.Contains(title)
+                         orderby st.NickName descending
+                         select new BKUserState
+                         {
+                             uID = st.UId,
+                             nickName = st.NickName,
+                             iconURL = st.Icon,
+                             introduction = st.Introduction,
+                             state = st.State
+                         });
+
+            return await PagedList<BKUserState>.Create(query, pageNum, pageSize);
+        }
+
+        public async Task<PagedList<BKUserState>> selectByTime(string title, int state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkUserInfo
+                         where st.State.Equals(state) && st.NickName.Contains(title)
+                         orderby st.UId descending
+                         select new BKUserState
+                         {
+                             uID = st.UId,
+                             nickName = st.NickName,
+                             iconURL = st.Icon,
+                             introduction = st.Introduction,
+                             state = st.State
+                         });
+
+            return await PagedList<BKUserState>.Create(query, pageNum, pageSize);
+        }
+
+        public async void changeUserState(int uid)
+        {
+            BkUserInfo userInfo = await _context.BkUserInfo
+                .Where(x => x.UId.Equals(uid))
+                .FirstOrDefaultAsync();
+
+            userInfo.State = 1 - userInfo.State;
+
+            _context.Entry(userInfo).State = EntityState.Modified;
+        }
     }
 }

@@ -6,104 +6,210 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BaikeAsp.Models;
+using BaikeAsp.Util;
+using BaikeAsp.Dto;
+using BaikeAsp.Common;
+using Microsoft.AspNetCore.Mvc.Razor.Internal;
+using BaikeAsp.Dao;
+using Microsoft.VisualBasic;
+using System.Security.Principal;
 
 namespace BaikeAsp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class BkAdminsController : ControllerBase
     {
-        private readonly BaikeContext _context;
+        private readonly IInteractiveVideoReposity interactiveVideoReposity;
+        private readonly IUserInfoReposity userInfoReposity;
+        private readonly IAdminReposity adminReposity;
 
-        public BkAdminsController(BaikeContext context)
-        {
-            _context = context;
+        public BkAdminsController(IInteractiveVideoReposity interactiveVideo, IUserInfoReposity userInfo, IAdminReposity admin){
+            interactiveVideoReposity = interactiveVideo ?? throw new ArgumentNullException(nameof(interactiveVideoReposity));
+            userInfoReposity = userInfo ?? throw new ArgumentNullException(nameof(userInfoReposity));
+            adminReposity = admin ?? throw new ArgumentNullException(nameof(adminReposity));
         }
 
-        // GET: api/BkAdmins
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BkAdmin>>> GetBkAdmin()
+        [HttpGet("SearchVideoByAdmin/{title}/{page}/{searchStyle}/{tag}")]
+        public async Task<ActionResult> Search([FromRoute] string title, [FromRoute] int page,
+            [FromRoute] string searchStyle, [FromRoute] string tag)
         {
-            return await _context.BkAdmin.ToListAsync();
-        }
-
-        // GET: api/BkAdmins/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<BkAdmin>> GetBkAdmin(int id)
-        {
-            var bkAdmin = await _context.BkAdmin.FindAsync(id);
-
-            if (bkAdmin == null)
+            BKSearchVideoListViewModel y = new BKSearchVideoListViewModel();
+            y.pageNum = page;
+            int state = 0;
+            if (tag.Equals("NORMAL"))
             {
-                return NotFound();
+                state = 2;
             }
-
-            return bkAdmin;
-        }
-
-        // PUT: api/BkAdmins/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBkAdmin(int id, BkAdmin bkAdmin)
-        {
-            if (id != bkAdmin.AId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(bkAdmin).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BkAdminExists(id))
+                switch (searchStyle)
                 {
-                    return NotFound();
+                    case "Collect":
+                        y.list = await interactiveVideoReposity.selectByCollectVolume(title, state, page, 9);
+                        break;
+                    case "playV":
+                        y.list = await interactiveVideoReposity.selectByPlayVolume(title, state, page, 9);
+                        break;
+                    default:
+                        y.list = await interactiveVideoReposity.selectByTime(title, state, page, 9);
+                        break;
+                }
+                return Ok(CommonResult.Success(y, "Search Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Search Fail"));
+            }
+        }
+
+        [HttpGet("SearchUserByAdmin/{title}/{page}/{searchStyle}/{tag}")]
+        public async Task<ActionResult> Search2([FromRoute] string title, [FromRoute] int page,
+            [FromRoute] string searchStyle, [FromRoute] string tag)
+        {
+            BKSearchUserByAdministrationViewModel y = new BKSearchUserByAdministrationViewModel();
+            y.pageNum = page;
+            int state = 0;
+            if (tag.Equals("NORMAL"))
+            {
+                state = 1;
+            }
+            try
+            {
+                switch (searchStyle)
+                {
+                    case "name":
+                        y.list = await userInfoReposity.selectByName(title, state, page, 9);
+                        break;
+                    default:
+                        y.list = await userInfoReposity.selectByTime(title, state, page, 9);
+                        break;
+                }
+                return Ok(CommonResult.Success(y, "Search Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Search Fail"));
+            }
+        }
+
+        [HttpGet("SearchVideoByAdmin/{page}/{searchStyle}/{tag}")]
+        public async Task<ActionResult> Search3([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
+        {
+            string title = "";
+            BKSearchVideoListViewModel y = new BKSearchVideoListViewModel();
+            y.pageNum = page;
+            int state = 0;
+            if (tag.Equals("NORMAL"))
+            {
+                state = 2;
+            }
+            try
+            {
+                switch (searchStyle)
+                {
+                    case "Collect":
+                        y.list = await interactiveVideoReposity.selectByCollectVolume(title, state, page, 9);
+                        break;
+                    case "playV":
+                        y.list = await interactiveVideoReposity.selectByPlayVolume(title, state, page, 9);
+                        break;
+                    default:
+                        y.list = await interactiveVideoReposity.selectByTime(title, state, page, 9);
+                        break;
+                }
+                return Ok(CommonResult.Success(y, "Search Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Search Fail"));
+            }
+        }
+
+        [HttpGet("SearchUserByAdmin/{page}/{searchStyle}/{tag}")]
+        public async Task<ActionResult> Search4([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
+        {
+            string title = "";
+            BKSearchUserByAdministrationViewModel y = new BKSearchUserByAdministrationViewModel();
+            y.pageNum = page;
+            int state = 0;
+            if (tag.Equals("NORMAL"))
+            {
+                state = 1;
+            }
+            try
+            {
+                switch (searchStyle)
+                {
+                    case "name":
+                        y.list = await userInfoReposity.selectByName(title, state, page, 9);
+                        break;
+                    default:
+                        y.list = await userInfoReposity.selectByTime(title, state, page, 9);
+                        break;
+                }
+                return Ok(CommonResult.Success(y, "Search Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Search Fail"));
+            }
+        }
+
+        [HttpPut("ChangeUserState/{id}")]
+        public async Task<ActionResult> ChangeUserState([FromRoute] int id)
+        {
+            try
+            {
+                userInfoReposity.changeUserState(id);
+                await userInfoReposity.SaveAsync();
+                return Ok(CommonResult.Success("Update Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Update Fail"));
+            }
+        }
+
+        [HttpPut("ChangeVideoState/{id}")]
+        public async Task<ActionResult> ChangeVideoState([FromRoute] int id)
+        {
+            try
+            {
+                interactiveVideoReposity.changeVideoState(id);
+                await interactiveVideoReposity.SaveAsync();
+                return Ok(CommonResult.Success("Update Success"));
+            }
+            catch (Exception)
+            {
+                return NotFound(CommonResult.Fail("Update Fail"));
+            }
+        }
+
+        [HttpPost("AdminLogin")]
+        public async Task<ActionResult> AdminLogin([FromBody] BkAdmin bkAdmin)
+        {
+            if (bkAdmin == null)
+            {
+                return NotFound(CommonResult.Fail("账号密码不能为空"));
+            }
+            string account = bkAdmin.Account;
+            string psd = bkAdmin.Password;
+            try
+            {
+                if (adminReposity.Detection(account, psd) != null)
+                {
+                    return Ok(CommonResult.Success("Login Success"));
                 }
                 else
                 {
-                    throw;
+                    return NotFound(CommonResult.Fail("Login Fail"));
                 }
             }
-
-            return NoContent();
-        }
-
-        // POST: api/BkAdmins
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<BkAdmin>> PostBkAdmin(BkAdmin bkAdmin)
-        {
-            _context.BkAdmin.Add(bkAdmin);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBkAdmin", new { id = bkAdmin.AId }, bkAdmin);
-        }
-
-        // DELETE: api/BkAdmins/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<BkAdmin>> DeleteBkAdmin(int id)
-        {
-            var bkAdmin = await _context.BkAdmin.FindAsync(id);
-            if (bkAdmin == null)
+            catch (Exception)
             {
-                return NotFound();
+                return NotFound(CommonResult.Fail("Unknown Error"));
             }
-
-            _context.BkAdmin.Remove(bkAdmin);
-            await _context.SaveChangesAsync();
-
-            return bkAdmin;
-        }
-
-        private bool BkAdminExists(int id)
-        {
-            return _context.BkAdmin.Any(e => e.AId == id);
         }
     }
 }

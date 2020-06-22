@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nu6DvnSzFkC0D0PFRSrbM8e3Ym/UQIHLCb3ZB7RX9fPx7iaryu+uK4XhEl79pDXF0getV4wZBoEjUD8YVBTd0A==",
+  "dgSpecHash": "OpcFwORMCLgdaaJ0erJxOkGvbAPewgG/smoGYkmLUNnvS69uxWIPnte43EjmfUBCoQJSjAsuJUKEi/dno13waA==",
   "success": true,
   "projectFilePath": "C:\\Users\\19134\\Desktop\\Baike-Asp\\BaikeAsp\\BaikeAsp.csproj",
   "expectedPackageFiles": [
@@ -70,7 +70,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\19134\\.nuget\\packages\\mysqlconnector\\0.61.0\\mysqlconnector.0.61.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\19134\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\19134\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\3.1.1\\pomelo.entityframeworkcore.mysql.3.1.1.nupkg.sha512",
