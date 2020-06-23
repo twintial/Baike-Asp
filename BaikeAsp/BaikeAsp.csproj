@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="resources\img\userIcon\" />
+    <Folder Include="resources\img\videoCover\" />
     <Folder Include="resources\temp\" />
+    <Folder Include="resources\video\" />
   </ItemGroup>
 
   <ItemGroup>
