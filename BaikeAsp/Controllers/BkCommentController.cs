@@ -21,22 +21,28 @@ namespace BaikeAsp.Controllers
     [ApiController]
     public class BkCommentController : ControllerBase
     {
-        private readonly IBarrageReposity barrageReposity;
-        public BkCommentController(IBarrageReposity barrage)
+        private readonly ICommentReposity commentReposity;
+        public BkCommentController(ICommentReposity comment)
         {
-            barrageReposity = barrage ?? throw new ArgumentNullException(nameof(barrageReposity));
+            commentReposity = comment ?? throw new ArgumentNullException(nameof(commentReposity));
         }
 
         [HttpPost("send/comment")]
-        public Task<ActionResult> sendComment()
+        public async Task<ActionResult> sendComment([FromBody] BkComments comments)
         {
+            comments.SendTime = new DateTime();
             try
             {
-                return Ok(CommonResult.Success("Send Success"));
+                int num = await commentReposity.insertComment(comments);
+                if (num == 1)
+                {
+                    return Ok(CommonResult.Success("Send Success"));
+                }
+                return Ok(CommonResult.Success("Send Fail"));
             }
             catch (Exception)
             {
-                return NotFound(CommonResult.Fail("Send Fail"));
+                return Ok(CommonResult.Fail("Send Fail"));
             }
         }
     }
