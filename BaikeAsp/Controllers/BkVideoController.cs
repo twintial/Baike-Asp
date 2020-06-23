@@ -1,12 +1,13 @@
 ﻿using BaikeAsp.Common;
 using BaikeAsp.Dao;
+using BaikeAsp.Dto;
+using BaikeAsp.Models;
 using BaikeAsp.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaikeAsp.Controllers
@@ -79,6 +80,56 @@ namespace BaikeAsp.Controllers
         {
             bool success = FileUtil.DeleteTempFile($@"{Path.Combine(ResourcePath.TEMP, $@"{uuid}.{type}")}");
             return StatusCode(200, success);
+        }
+        [HttpPost("video/submit")]
+        public async Task<IActionResult> Submit([FromBody] BKVideoUploadViewModel uploadViewModel)
+        {
+            // 判断是否登陆
+            int? uId = HttpContext.Session.GetInt32("userID");
+            if (uId == null)
+            {
+                return Ok(CommonResult.Fail("Please Login"));
+            }
+            // 插入互动视频
+            var interVideoModel = new BkInteractiveVideo
+            {
+                UId = (int)uId,
+                State = 1,
+                UploadTime = new DateTime(),
+                Icon = uploadViewModel.Icon,
+                VideoName = uploadViewModel.VideoName,
+                Introduction = uploadViewModel.Introduction,
+                Tag = uploadViewModel.Tag
+            };
+            _interactiveVideoReposity.AddInterVideo(interVideoModel);
+            // 移动封面
+            string coverPath = Path.Combine(ResourcePath.VIDEO_COVER, interVideoModel.InterVideoId.ToString());
+            Directory.CreateDirectory(coverPath);
+            System.IO.File.Move(Path.Combine(ResourcePath.TEMP, uploadViewModel.CoverUUID),
+                Path.Combine(coverPath, uploadViewModel.CoverUUID));
+            // 移动视频
+            string videoPath = Path.Combine(ResourcePath.VIDEO, uploadViewModel.InterVideoID.ToString());
+            foreach(var videoUUID in uploadViewModel.VideoFilesUUID)
+            {
+                System.IO.File.Move(Path.Combine(ResourcePath.TEMP, videoUUID),
+                Path.Combine(videoPath, videoUUID));
+            }
+
+            // 插入视频
+            List<BkVideo> videos = new List<BkVideo>();
+            for(int i = 0; i < uploadViewModel.VideoFilesUUID.Count; i++)
+            {
+                var video = new BkVideo
+                {
+                    InterVideoId = uploadViewModel.InterVideoID,
+                    Title = $@"p{i + 1}_{uploadViewModel.VIdeoNames[i]}",
+                    VideoUrl = Path.Combine("video", uploadViewModel.InterVideoID.ToString(), uploadViewModel.VideoFilesUUID[i])
+                };
+                videos.Add(video);
+            }
+            _interactiveVideoReposity.AddVideos(videos);
+            await _interactiveVideoReposity.SaveAsync();
+            return Ok();
         }
     }
 }

@@ -21,5 +21,9 @@ namespace BaikeAsp.Dao
         Task<List<BKNextVideoViewModel>> FindNextVideos(int videoId);
 
         Task<string> GetUrlByVId(int videoId);
+
+        void AddVideos(List<BkVideo> videos);
+        void AddInterVideo(BkInteractiveVideo interactiveVideo);
+        Task<bool> SaveAsync();
     }
 }

@@ -18,6 +18,16 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
+        public void AddInterVideo(BkInteractiveVideo interactiveVideo)
+        {
+            _context.BkInteractiveVideo.AddAsync(interactiveVideo);
+        }
+
+        public void AddVideos(List<BkVideo> videos)
+        {
+            _context.BkVideo.AddRangeAsync(videos);
+        }
+
         public Task<List<BKNextVideoViewModel>> FindNextVideos(int videoId)
         {
             var query = from nv in _context.BkNextVideo
@@ -56,6 +66,11 @@ namespace BaikeAsp.Dao.Impl
         public int GetVideoCountByUid(int uid)
         {
             return _context.BkInteractiveVideo.Where(x => x.UId == uid).Count();
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         public Task<List<BKSearchInterVideo>> SearchVideos(string searchName, string tag, int page, int size)
