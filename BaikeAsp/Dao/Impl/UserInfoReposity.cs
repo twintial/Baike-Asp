@@ -17,9 +17,19 @@ namespace BaikeAsp.Dao.Impl
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        public async Task<BkUserInfo> GetBkUserInfo(int uid)
+        public async Task<BKUserInfoViewModel> GetBkUserInfo(int uid)
         {
-            return await _context.BkUserInfo.Where(x => x.UId.Equals(uid)).FirstOrDefaultAsync();
+            BkUserInfo bkUserInfo = await _context.BkUserInfo.Where(x => x.UId.Equals(uid)).FirstOrDefaultAsync();
+            BKUserInfoViewModel bKUserInfoViewModel = new BKUserInfoViewModel
+            {
+                uID = bkUserInfo.UId,
+                nickName = bkUserInfo.NickName,
+                iconURL = bkUserInfo.Icon,
+                state = bkUserInfo.State,
+                introduction = bkUserInfo.Introduction,
+                backgroundIconURL = bkUserInfo.BackgroundIcon
+            };
+            return bKUserInfoViewModel;
         }
 
         public async Task<PagedList<BKUserFollowersDto>> selectUserFollowersByUid(int uid, int pageNum, int pageSize)
@@ -29,9 +39,9 @@ namespace BaikeAsp.Dao.Impl
                          where gl.FavUserId.Equals(uid) && st.State != 0
                          select new BKUserFollowersDto
                          {
-                             UId = st.UId,
-                             NickName = st.NickName,
-                             Icon = st.Icon
+                             uID = st.UId,
+                             nickName = st.NickName,
+                             iconURL = st.Icon
                          });
 
             return await PagedList<BKUserFollowersDto>.Create(query, pageNum, pageSize);
@@ -44,9 +54,9 @@ namespace BaikeAsp.Dao.Impl
                          where gl.UId.Equals(uid) && st.State != 0
                          select new BKUserFollowersDto
                          {
-                             UId = st.UId,
-                             NickName = st.NickName,
-                             Icon = st.Icon
+                             uID = st.UId,
+                             nickName = st.NickName,
+                             iconURL = st.Icon
                          });
 
             return await PagedList<BKUserFollowersDto>.Create(query, pageNum, pageSize);

@@ -7,6 +7,7 @@ using Microsoft.VisualBasic;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,7 +66,21 @@ namespace BaikeAsp.Dao.Impl
                         orderby st.CollectPoint descending
                         select new BKInterVideoViewModel
                         {
-                            bkInteractiveVideo = st
+                            bkInteractiveVideo = new BKInteractiveVideoViewModel
+                            {
+                                interVideoID = st.InterVideoId,
+                                videoName = st.VideoName,
+                                introduction = st.Introduction,
+                                tag = st.Tag,
+                                uID = st.UId,
+                                playVolume = st.PlayVolume,
+                                praisePoint = st.PraisePoint,
+                                collectPoint = st.CollectPoint,
+                                state = st.State,
+                                uploadTime = st.UploadTime,
+                                icon = st.Icon,
+                                initVideoID = st.InitVideoId
+                            }
                         });
 
             return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
@@ -78,7 +93,21 @@ namespace BaikeAsp.Dao.Impl
                          orderby st.PlayVolume descending
                          select new BKInterVideoViewModel
                          {
-                             bkInteractiveVideo = st
+                             bkInteractiveVideo = new BKInteractiveVideoViewModel
+                             {
+                                 interVideoID = st.InterVideoId,
+                                 videoName = st.VideoName,
+                                 introduction = st.Introduction,
+                                 tag = st.Tag,
+                                 uID = st.UId,
+                                 playVolume = st.PlayVolume,
+                                 praisePoint = st.PraisePoint,
+                                 collectPoint = st.CollectPoint,
+                                 state = st.State,
+                                 uploadTime = st.UploadTime,
+                                 icon = st.Icon,
+                                 initVideoID = st.InitVideoId
+                             }
                          });
 
             return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
@@ -91,30 +120,73 @@ namespace BaikeAsp.Dao.Impl
                          orderby st.UploadTime descending
                          select new BKInterVideoViewModel
                          {
-                             bkInteractiveVideo = st
+                             bkInteractiveVideo = new BKInteractiveVideoViewModel
+                             {
+                                 interVideoID = st.InterVideoId,
+                                 videoName = st.VideoName,
+                                 introduction = st.Introduction,
+                                 tag = st.Tag,
+                                 uID = st.UId,
+                                 playVolume = st.PlayVolume,
+                                 praisePoint = st.PraisePoint,
+                                 collectPoint = st.CollectPoint,
+                                 state = st.State,
+                                 uploadTime = st.UploadTime,
+                                 icon = st.Icon,
+                                 initVideoID = st.InitVideoId
+                             }
                          });
 
             return await PagedList<BKInterVideoViewModel>.Create(query, pageNum, pageSize);
         }
 
-        public async Task<PagedList<BkInteractiveVideo>> selectFavVideoByUid(int uid, int pageNum, int pageSize)
+        public async Task<PagedList<BKInteractiveVideoViewModel>> selectFavVideoByUid(int uid, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
                          join gl in _context.BkCollection on st.InterVideoId equals gl.FavVideoId
                          where gl.UId.Equals(uid) && st.State != 0
-                         select st);
+                         select new BKInteractiveVideoViewModel
+                         {
+                             interVideoID = st.InterVideoId,
+                             videoName = st.VideoName,
+                             introduction = st.Introduction,
+                             tag = st.Tag,
+                             uID = st.UId,
+                             playVolume = st.PlayVolume,
+                             praisePoint = st.PraisePoint,
+                             collectPoint = st.CollectPoint,
+                             state = st.State,
+                             uploadTime = st.UploadTime,
+                             icon = st.Icon,
+                             initVideoID = st.InitVideoId
+                         });
 
-            return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+            return await PagedList<BKInteractiveVideoViewModel>.Create(query, pageNum, pageSize);
         }
 
-        public async Task<PagedList<BkInteractiveVideo>> selectHisVideoByUid(int uid, int pageNum, int pageSize)
+        public async Task<PagedList<BKInteractiveVideoViewModel>> selectHisVideoByUid(int uid, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
                          where st.UId.Equals(uid) && st.State.Equals(2)
-                         select st);
+                         select new BKInteractiveVideoViewModel
+                         {
+                             interVideoID = st.InterVideoId,
+                             videoName = st.VideoName,
+                             introduction = st.Introduction,
+                             tag = st.Tag,
+                             uID = st.UId,
+                             playVolume = st.PlayVolume,
+                             praisePoint = st.PraisePoint,
+                             collectPoint = st.CollectPoint,
+                             state = st.State,
+                             uploadTime = st.UploadTime,
+                             icon = st.Icon,
+                             initVideoID = st.InitVideoId
+                         });
 
-            return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+            return await PagedList<BKInteractiveVideoViewModel>.Create(query, pageNum, pageSize);
         }
+
         public void AddInterVideo(BkInteractiveVideo interactiveVideo)
         {
             _context.BkInteractiveVideo.AddAsync(interactiveVideo);
@@ -277,13 +349,27 @@ namespace BaikeAsp.Dao.Impl
             return bkInteractiveVideo.InitVideoId;
         }
 
-        public async Task<PagedList<BkInteractiveVideo>> selectInterVideosByUserIf(int uid, VideoState state, int pageNum, int pageSize)
+        public async Task<PagedList<BKInteractiveVideoViewModel>> selectInterVideosByUserIf(int uid, VideoState state, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
                          where st.State.Equals(state) && st.UId.Equals(uid)
-                         select st);
+                         select new BKInteractiveVideoViewModel
+                         {
+                             interVideoID = st.InterVideoId,
+                             videoName = st.VideoName,
+                             introduction = st.Introduction,
+                             tag = st.Tag,
+                             uID = st.UId,
+                             playVolume = st.PlayVolume,
+                             praisePoint = st.PraisePoint,
+                             collectPoint = st.CollectPoint,
+                             state = st.State,
+                             uploadTime = st.UploadTime,
+                             icon = st.Icon,
+                             initVideoID = st.InitVideoId
+                         });
 
-            return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+            return await PagedList<BKInteractiveVideoViewModel>.Create(query, pageNum, pageSize);
         }
 
         public async void deleteInteractiveVideoByID(int vid)
@@ -294,11 +380,27 @@ namespace BaikeAsp.Dao.Impl
             _context.BkInteractiveVideo.Remove(bkInteractiveVideo);
         }
 
-        public async Task<BkInteractiveVideo> findVideoPlayPageInfo(int vid)
+        public async Task<BKInteractiveVideoViewModel> findVideoPlayPageInfo(int vid)
         {
-            return await _context.BkInteractiveVideo
-                .Where(x => x.InterVideoId.Equals(vid))
-                .FirstOrDefaultAsync();
+            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+                                                        .Where(x => x.InterVideoId.Equals(vid))
+                                                        .FirstOrDefaultAsync();
+            BKInteractiveVideoViewModel bKInteractiveVideoViewModel = new BKInteractiveVideoViewModel
+            {
+                interVideoID = bkInteractiveVideo.InterVideoId,
+                videoName = bkInteractiveVideo.VideoName,
+                introduction = bkInteractiveVideo.Introduction,
+                tag = bkInteractiveVideo.Tag,
+                uID = bkInteractiveVideo.UId,
+                playVolume = bkInteractiveVideo.PlayVolume,
+                praisePoint = bkInteractiveVideo.PraisePoint,
+                collectPoint = bkInteractiveVideo.CollectPoint,
+                state = bkInteractiveVideo.State,
+                uploadTime = bkInteractiveVideo.UploadTime,
+                icon = bkInteractiveVideo.Icon,
+                initVideoID = bkInteractiveVideo.InitVideoId
+            };
+            return bKInteractiveVideoViewModel;
         }
 
         public Task<List<BKSearchInterVideo>> SearchVideosByTag(string tag, int page, int size)

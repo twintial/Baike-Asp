@@ -304,5 +304,5 @@ C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\staticwebasset
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.dll
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.pdb
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.genruntimeconfig.cache
-C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
-C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csproj.CoreCompileInputs.cache
+C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.MvcApplicationPartsAssemblyInfo.cache

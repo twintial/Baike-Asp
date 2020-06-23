@@ -53,7 +53,7 @@ namespace BaikeAsp.Controllers
                 {
                     videoState = VideoState.EDITABLE;
                 }
-                PagedList<BkInteractiveVideo> result = await interactiveVideoReposity.selectFavVideoByUid(uid, pageNum, 5);
+                PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectInterVideosByUserIf(uid, videoState, pageNum, 5);
                 return Ok(CommonResult.Success(result, "Search Success"));
             }
             catch (Exception)
@@ -90,7 +90,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BkInteractiveVideo bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
+                BKInteractiveVideoViewModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
                 return Ok(CommonResult.Success(bkInteractiveVideo, "Search Success"));
             }
             catch (Exception)
@@ -100,28 +100,34 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPost("history")]
-        public async Task<ActionResult> insertHistory([FromBody] BkBrowseHistory bkBrowseHistory)
+        public async Task<ActionResult> insertHistory([FromBody] BKBrowseHistoryViewModel bkBrowseHistory)
         {
-            bkBrowseHistory.WatchDate = new DateTime();
+            bkBrowseHistory.watchDate = new DateTime();
+            BkBrowseHistory browseHistory = new BkBrowseHistory
+            {
+                UId = bkBrowseHistory.uID,
+                WatchVideoId = bkBrowseHistory.watchVideoID,
+                WatchDate = bkBrowseHistory.watchDate
+            };
             try
             {
-                browseHistoryReposity.insertBrowseHistory(bkBrowseHistory);
+                browseHistoryReposity.insertBrowseHistory(browseHistory);
                 await browseHistoryReposity.SaveAsync();
                 return Ok(CommonResult.Success("Insert Success"));
             }
             catch (Exception)
             {
-                browseHistoryReposity.updateBrowseHistory(bkBrowseHistory);
+                browseHistoryReposity.updateBrowseHistory(browseHistory);
                 await browseHistoryReposity.SaveAsync();
                 return Ok(CommonResult.Success("Update Success"));
             }
         }
 
         [HttpPost("insert/collection")]
-        public async Task<ActionResult> insertCollection([FromBody] BkCollection collection)
+        public async Task<ActionResult> insertCollection([FromBody] BKCollectionViewModel collection)
         {
-            int? cuid = collection.UId;
-            int? fvid = collection.FavVideoId;
+            int? cuid = collection.uID;
+            int? fvid = collection.favVideoID;
             if (cuid == null)
             {
                 return Ok(CommonResult.Fail("Please Login First"));
@@ -130,9 +136,14 @@ namespace BaikeAsp.Controllers
             {
                 return Ok(CommonResult.Fail("Error"));
             }
+            BkCollection bkCollection = new BkCollection
+            {
+                UId = collection.uID,
+                FavVideoId = collection.favVideoID
+            };
             try
             {
-                collectionReposity.insertCollection(collection);
+                collectionReposity.insertCollection(bkCollection);
                 await collectionReposity.SaveAsync();
             }
             catch (Exception)
@@ -145,7 +156,7 @@ namespace BaikeAsp.Controllers
         [HttpDelete("delete/collection/{uID}/{vID}")]
         public ActionResult deleteCollection([FromRoute] int uID, [FromRoute] int vID)
         {
-            BkCollection collection = new BkCollection()
+            BkCollection collection = new BkCollection
             {
                 UId = uID,
                 FavVideoId = vID

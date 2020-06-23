@@ -1,4 +1,5 @@
-﻿using BaikeAsp.Models;
+﻿using BaikeAsp.Dto;
+using BaikeAsp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace BaikeAsp.Dao
 {
     public interface IVideoReposity
     {
-        Task<List<BkVideo>> selectVideoByInterVID(int ivid);
+        Task<List<BKVideoViewModel>> selectVideoByInterVID(int ivid);
     }
 }

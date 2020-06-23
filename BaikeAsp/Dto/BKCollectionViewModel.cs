@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace BaikeAsp.Dto
 {
-    public class BKUserFollowersDto
+    public class BKCollectionViewModel
     {
         public int uID { get; set; }
-        public string nickName { get; set; }
-        public string iconURL { get; set; }
+        public int favVideoID { get; set; }
     }
 }

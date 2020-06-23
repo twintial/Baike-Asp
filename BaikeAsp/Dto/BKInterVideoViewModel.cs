@@ -9,6 +9,6 @@ namespace BaikeAsp.Dto
     public class BKInterVideoViewModel
     {
         public string nickName { get; set; }
-        public BkInteractiveVideo bkInteractiveVideo { get; set; }
+        public BKInteractiveVideoViewModel bkInteractiveVideo { get; set; }
     }
 }

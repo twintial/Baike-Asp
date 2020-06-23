@@ -10,7 +10,7 @@ namespace BaikeAsp.Dao
 {
     public interface IUserInfoReposity
     {
-        Task<BkUserInfo> GetBkUserInfo(int uid);
+        Task<BKUserInfoViewModel> GetBkUserInfo(int uid);
         Task<PagedList<BKUserFollowersDto>> selectUserFollowersByUid(int uid, int pageNum, int pageSize);
         Task<PagedList<BKUserFollowersDto>> selectUsersFollowByUid(int uid, int pageNum, int pageSize);
         public Task<int> GetState(int uID);
