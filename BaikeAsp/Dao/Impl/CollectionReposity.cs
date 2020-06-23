@@ -18,6 +18,11 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
+        public void deleteCollection(BkCollection collection)
+        {
+            _context.BkCollection.Remove(collection);
+        }
+
         public async void deleteFavVideoByID(int uid, int favid)
         {
             BkCollection bkCollection = await _context.BkCollection
@@ -32,14 +37,19 @@ namespace BaikeAsp.Dao.Impl
                 .CountAsync();
         }
 
-        public void insertFavVideoByID(int uid, int vid)
+        public async void insertCollection(BkCollection collection)
+        {
+            await _context.BkCollection.AddAsync(collection);
+        }
+
+        public async void insertFavVideoByID(int uid, int vid)
         {
             BkCollection bkCollection = new BkCollection
             {
                 UId = uid,
                 FavVideoId = vid
             };
-            _context.BkCollection.AddAsync(bkCollection);
+            await _context.BkCollection.AddAsync(bkCollection);
         }
 
         public async Task<long> isCollect(int uid, int vid)

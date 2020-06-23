@@ -1,8 +1,10 @@
-﻿using BaikeAsp.Dto;
+﻿using BaikeAsp.Common;
+using BaikeAsp.Dto;
 using BaikeAsp.Models;
 using BaikeAsp.Util;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
@@ -146,6 +148,30 @@ namespace BaikeAsp.Dao.Impl
                                                         .Where(x => x.InterVideoId.Equals(intervideoid))
                                                         .FirstOrDefaultAsync();
             return bkInteractiveVideo.InitVideoId;
+        }
+
+        public async Task<PagedList<BkInteractiveVideo>> selectInterVideosByUserIf(int uid, VideoState state, int pageNum, int pageSize)
+        {
+            var query = (from st in _context.BkInteractiveVideo
+                         where st.State.Equals(state) && st.UId.Equals(uid)
+                         select st);
+
+            return await PagedList<BkInteractiveVideo>.Create(query, pageNum, pageSize);
+        }
+
+        public async void deleteInteractiveVideoByID(int vid)
+        {
+            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+                                                        .Where(x => x.InterVideoId.Equals(vid))
+                                                        .FirstOrDefaultAsync();
+            _context.BkInteractiveVideo.Remove(bkInteractiveVideo);
+        }
+
+        public async Task<BkInteractiveVideo> findVideoPlayPageInfo(int vid)
+        {
+            return await _context.BkInteractiveVideo
+                .Where(x => x.InterVideoId.Equals(vid))
+                .FirstOrDefaultAsync();
         }
     }
 }
