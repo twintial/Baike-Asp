@@ -372,20 +372,80 @@ namespace BaikeAsp.Dao.Impl
             return await PagedList<BKInteractiveVideoViewModel>.Create(query, pageNum, pageSize);
         }
 
-        public async void deleteInteractiveVideoByID(int vid)
+        public async Task<bool> deleteInteractiveVideoByID(int vid)
         {
             BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
                                                         .Where(x => x.InterVideoId.Equals(vid))
                                                         .FirstOrDefaultAsync();
             _context.BkInteractiveVideo.Remove(bkInteractiveVideo);
+            return true;
         }
 
-        public async Task<BKInteractiveVideoViewModel> findVideoPlayPageInfo(int vid)
+        public async Task<BKVideoPlayVideoModel> findVideoPlayPageInfo(int vid)
         {
             BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
                                                         .Where(x => x.InterVideoId.Equals(vid))
                                                         .FirstOrDefaultAsync();
-            BKInteractiveVideoViewModel bKInteractiveVideoViewModel = new BKInteractiveVideoViewModel
+
+            BkVideo bkVideo = await _context.BkVideo
+                .Where(x => x.VideoId.Equals(bkInteractiveVideo.InterVideoId))
+                .FirstOrDefaultAsync();
+
+            BKVideoViewModel bKVideoViewModel = new BKVideoViewModel
+            {
+                videoID = bkVideo.VideoId,
+                interVideoID = bkVideo.InterVideoId,
+                videoURL = bkVideo.VideoUrl,
+                title = bkVideo.Title
+            };
+
+            BkUserInfo bkUserInfo = await _context.BkUserInfo
+                .Where(x => x.UId.Equals(bkInteractiveVideo.UId))
+                .FirstOrDefaultAsync();
+
+            BKUserInfoViewModel bKUserInfoViewModel = new BKUserInfoViewModel
+            {
+                uID = bkUserInfo.UId,
+                nickName = bkUserInfo.NickName,
+                iconURL = bkUserInfo.Icon,
+                state = bkUserInfo.State,
+                introduction = bkUserInfo.Introduction,
+                backgroundIconURL = bkUserInfo.BackgroundIcon
+            };
+
+            var query = (from st in _context.BkComments
+                         join gl in _context.BkUserInfo on st.UId equals gl.UId
+                         where st.InterVideoId.Equals(bkInteractiveVideo.InterVideoId)
+                         select new CommentViewModel
+                         {
+                             uID = gl.UId,
+                             interVideoID = st.InterVideoId,
+                             content = st.Content,
+                             sendTime = st.SendTime,
+                             icon = gl.Icon,
+                             nickName = gl.NickName
+                         });
+
+            List<CommentViewModel> list_A = await query.ToListAsync();
+
+            List<BkNextVideo> list_B1 = await _context.BkNextVideo
+                .Where(x => x.VideoId.Equals(bkInteractiveVideo.InitVideoId))
+                .ToListAsync();
+
+            List<BKNextVideoViewModel> list_B = new List<BKNextVideoViewModel>();
+
+            foreach (BkNextVideo i in list_B1)
+            {
+                BKNextVideoViewModel p = new BKNextVideoViewModel
+                {
+                    VideoID = i.VideoId,
+                    NextVideoID = i.NextVideoId,
+                    Choice = i.Choice
+                };
+                list_B.Add(p);
+            }
+
+            BKVideoPlayVideoModel bKInteractiveVideoViewModel = new BKVideoPlayVideoModel
             {
                 interVideoID = bkInteractiveVideo.InterVideoId,
                 videoName = bkInteractiveVideo.VideoName,
@@ -398,7 +458,11 @@ namespace BaikeAsp.Dao.Impl
                 state = bkInteractiveVideo.State,
                 uploadTime = bkInteractiveVideo.UploadTime,
                 icon = bkInteractiveVideo.Icon,
-                initVideoID = bkInteractiveVideo.InitVideoId
+                initVideoID = bkInteractiveVideo.InitVideoId,
+                initVideo = bKVideoViewModel,
+                userInfo = bKUserInfoViewModel,
+                comments = list_A,
+                nextVideos = list_B
             };
             return bKInteractiveVideoViewModel;
         }

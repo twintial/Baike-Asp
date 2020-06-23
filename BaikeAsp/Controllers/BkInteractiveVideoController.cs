@@ -67,15 +67,15 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                if (!DeleteFile.deleteFile(new FileInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
+                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Cover Delete Fail"));
                 }
-                if (!DeleteFile.deleteFile(new FileInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
+                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Video Delete Fail"));
                 }
-                interactiveVideoReposity.deleteInteractiveVideoByID(interVideoID);
+                await interactiveVideoReposity.deleteInteractiveVideoByID(interVideoID);
                 await interactiveVideoReposity.SaveAsync();
                 return Ok(CommonResult.Success("Delete Success"));
             }
@@ -90,7 +90,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BKInteractiveVideoViewModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
+                BKVideoPlayVideoModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
                 return Ok(CommonResult.Success(bkInteractiveVideo, "Search Success"));
             }
             catch (Exception)
