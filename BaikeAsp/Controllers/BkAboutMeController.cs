@@ -48,13 +48,19 @@ namespace BaikeAsp.Controllers
             BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
-                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
+                BKUserInfoViewModel bkUserInfoViewModel = await userInfoReposity.GetBkUserInfo((int)uid);
                 int uploadVideoNum = await interactiveVideoReposity.getUploadVideoNum((int)uid);
                 int favVideoNum = await collectionReposity.getFavVideoNum((int)uid);
                 int userFollowerNum = await favouriteReposity.getUserFollowerNum((int)uid);
                 int usersFollowNum = await favouriteReposity.getUsersFollowNum((int)uid);
 
-                bkHeadInfoViewModel.U = bkUserInfo;
+                bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+
                 bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
                 bkHeadInfoViewModel.favVideoNum = favVideoNum;
                 bkHeadInfoViewModel.userFollowerNum = userFollowerNum;
@@ -157,7 +163,7 @@ namespace BaikeAsp.Controllers
             }
             try
             {
-                userInfoReposity.updateUserInforByID((int)uid, userInfo.nickName, userInfo.introduction);
+                await userInfoReposity.updateUserInforByID((int)uid, userInfo.nickName, userInfo.introduction);
                 await userInfoReposity.SaveAsync();
             }
             catch (Exception)
@@ -190,15 +196,32 @@ namespace BaikeAsp.Controllers
         [HttpGet("aboutHis/{oID}")]
         public async Task<ActionResult> getOUserInfomation([FromRoute] int oID)
         {
+            BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
-                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo(oID);
-                return Ok(CommonResult.Success(bkUserInfo, "Search Success"));
+                BKUserInfoViewModel bkUserInfoViewModel = await userInfoReposity.GetBkUserInfo(oID);
+                int uploadVideoNum = await interactiveVideoReposity.getUploadVideoNum(oID);
+                int favVideoNum = await collectionReposity.getFavVideoNum(oID);
+                int userFollowerNum = await favouriteReposity.getUserFollowerNum(oID);
+                int usersFollowNum = await favouriteReposity.getUsersFollowNum(oID);
+
+                bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+
+                bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
+                bkHeadInfoViewModel.favVideoNum = favVideoNum;
+                bkHeadInfoViewModel.userFollowerNum = userFollowerNum;
+                bkHeadInfoViewModel.usersFollowNum = usersFollowNum;
             }
             catch (Exception)
             {
                 return Ok(CommonResult.Fail("Unknown Error"));
             }
+            return Ok(CommonResult.Success(bkHeadInfoViewModel, "Search Success"));
         }
 
         [HttpGet("aboutHis/favVideo/{oID}/{pageNum}")]

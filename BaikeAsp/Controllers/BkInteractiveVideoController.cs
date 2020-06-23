@@ -90,7 +90,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BKInteractiveVideoViewModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
+                BKVideoPlayVideoModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
                 return Ok(CommonResult.Success(bkInteractiveVideo, "Search Success"));
             }
             catch (Exception)

@@ -70,7 +70,7 @@ namespace BaikeAsp.Dao.Impl
                 .FirstAsync();
         }
 
-        public async void updateUserInforByID(int uid, string newNickName, string newIntroduction)
+        public async Task<bool> updateUserInforByID(int uid, string newNickName, string newIntroduction)
         {
             BkUserInfo userInfo = await _context.BkUserInfo
                 .Where(x => x.UId.Equals(uid))
@@ -80,6 +80,7 @@ namespace BaikeAsp.Dao.Impl
             userInfo.Introduction = newIntroduction;
 
             _context.Entry(userInfo).State = EntityState.Modified;
+            return true;
         }
 
         public async Task<bool> SaveAsync()

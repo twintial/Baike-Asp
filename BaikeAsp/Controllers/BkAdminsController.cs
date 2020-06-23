@@ -31,7 +31,7 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpGet("SearchVideoByAdmin/{title}/{page}/{searchStyle}/{tag}")]
-        public async Task<ActionResult> Search([FromRoute] string title, [FromRoute] int page,
+        public async Task<BKSearchVideoListViewModel> Search([FromRoute] string title, [FromRoute] int page,
             [FromRoute] string searchStyle, [FromRoute] string tag)
         {
             BKSearchVideoListViewModel y = new BKSearchVideoListViewModel();
@@ -55,16 +55,16 @@ namespace BaikeAsp.Controllers
                         y.list = await interactiveVideoReposity.selectByTime(title, state, page, 9);
                         break;
                 }
-                return Ok(CommonResult.Success(y, "Search Success"));
+                return y;
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Search Fail"));
+                return y;
             }
         }
 
         [HttpGet("SearchUserByAdmin/{title}/{page}/{searchStyle}/{tag}")]
-        public async Task<ActionResult> Search2([FromRoute] string title, [FromRoute] int page,
+        public async Task<BKSearchUserByAdministrationViewModel> Search2([FromRoute] string title, [FromRoute] int page,
             [FromRoute] string searchStyle, [FromRoute] string tag)
         {
             BKSearchUserByAdministrationViewModel y = new BKSearchUserByAdministrationViewModel();
@@ -85,16 +85,16 @@ namespace BaikeAsp.Controllers
                         y.list = await userInfoReposity.selectByTime(title, state, page, 9);
                         break;
                 }
-                return Ok(CommonResult.Success(y, "Search Success"));
+                return y;
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Search Fail"));
+                return y;
             }
         }
 
         [HttpGet("SearchVideoByAdmin/{page}/{searchStyle}/{tag}")]
-        public async Task<ActionResult> Search3([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
+        public async Task<BKSearchVideoListViewModel> Search3([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
         {
             string title = "";
             BKSearchVideoListViewModel y = new BKSearchVideoListViewModel();
@@ -118,16 +118,16 @@ namespace BaikeAsp.Controllers
                         y.list = await interactiveVideoReposity.selectByTime(title, state, page, 9);
                         break;
                 }
-                return Ok(CommonResult.Success(y, "Search Success"));
+                return y;
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Search Fail"));
+                return y;
             }
         }
 
         [HttpGet("SearchUserByAdmin/{page}/{searchStyle}/{tag}")]
-        public async Task<ActionResult> Search4([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
+        public async Task<BKSearchUserByAdministrationViewModel> Search4([FromRoute] int page, [FromRoute] string searchStyle, [FromRoute] string tag)
         {
             string title = "";
             BKSearchUserByAdministrationViewModel y = new BKSearchUserByAdministrationViewModel();
@@ -148,50 +148,48 @@ namespace BaikeAsp.Controllers
                         y.list = await userInfoReposity.selectByTime(title, state, page, 9);
                         break;
                 }
-                return Ok(CommonResult.Success(y, "Search Success"));
+                return y;
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Search Fail"));
+                return y;
             }
         }
 
         [HttpPut("ChangeUserState/{id}")]
-        public async Task<ActionResult> ChangeUserState([FromRoute] int id)
+        public async void ChangeUserState([FromRoute] int id)
         {
             try
             {
                 userInfoReposity.changeUserState(id);
                 await userInfoReposity.SaveAsync();
-                return Ok(CommonResult.Success("Update Success"));
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Update Fail"));
+
             }
         }
 
         [HttpPut("ChangeVideoState/{id}")]
-        public async Task<ActionResult> ChangeVideoState([FromRoute] int id)
+        public async void ChangeVideoState([FromRoute] int id)
         {
             try
             {
                 interactiveVideoReposity.changeVideoState(id);
                 await interactiveVideoReposity.SaveAsync();
-                return Ok(CommonResult.Success("Update Success"));
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Update Fail"));
+
             }
         }
 
         [HttpPost("AdminLogin")]
-        public ActionResult AdminLogin([FromBody] BKAdminViewModel bkAdmin)
+        public string AdminLogin([FromBody] BKAdminViewModel bkAdmin)
         {
             if (bkAdmin == null)
             {
-                return Ok(CommonResult.Fail("账号密码不能为空"));
+                return "false";
             }
             string account = bkAdmin.account;
             string psd = bkAdmin.password;
@@ -199,16 +197,16 @@ namespace BaikeAsp.Controllers
             {
                 if (adminReposity.Detection(account, psd) != null)
                 {
-                    return Ok(CommonResult.Success("Login Success"));
+                    return "true";
                 }
                 else
                 {
-                    return Ok(CommonResult.Fail("Login Fail"));
+                    return "false";
                 }
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Unknown Error"));
+                return "false";
             }
         }
     }

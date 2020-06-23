@@ -21,9 +21,9 @@ namespace BaikeAsp.Dao.Impl
             _context.BkBrowseHistory.Remove(bkBrowseHistory);
         }
 
-        public async void insertBrowseHistory(BkBrowseHistory bkBrowseHistory)
+        public void insertBrowseHistory(BkBrowseHistory bkBrowseHistory)
         {
-            await _context.BkBrowseHistory.AddAsync(bkBrowseHistory);
+            _context.BkBrowseHistory.AddAsync(bkBrowseHistory);
         }
 
         public async Task<bool> SaveAsync()
@@ -31,11 +31,11 @@ namespace BaikeAsp.Dao.Impl
             return await _context.SaveChangesAsync() >= 0;
         }
 
-        public async void updateBrowseHistory(BkBrowseHistory bkBrowseHistory)
+        public void updateBrowseHistory(BkBrowseHistory bkBrowseHistory)
         {
-            BkBrowseHistory bkBrowse = await _context.BkBrowseHistory
-                .Where(x => x.UId.Equals(bkBrowseHistory.UId) && x.WatchVideoId.Equals(bkBrowseHistory.WatchVideoId))
-                .FirstOrDefaultAsync();
+            BkBrowseHistory bkBrowse = _context.BkBrowseHistory
+            .Where(x => x.UId.Equals(bkBrowseHistory.UId) && x.WatchVideoId.Equals(bkBrowseHistory.WatchVideoId))
+            .FirstOrDefault();
 
             bkBrowse.WatchDate = bkBrowseHistory.WatchDate;
             _context.Entry(bkBrowse).State = EntityState.Modified;
