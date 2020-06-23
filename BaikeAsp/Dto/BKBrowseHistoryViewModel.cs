@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace BaikeAsp.Dto
 {
-    public class BKUserFollowersDto
+    public class BKBrowseHistoryViewModel
     {
         public int uID { get; set; }
-        public string nickName { get; set; }
-        public string iconURL { get; set; }
+        public int watchVideoID { get; set; }
+        public DateTime watchDate { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BaikeAsp.Models;
+﻿using BaikeAsp.Dto;
+using BaikeAsp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,24 @@ namespace BaikeAsp.Dao.Impl
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        public async Task<List<BkVideo>> selectVideoByInterVID(int ivid)
+        public async Task<List<BKVideoViewModel>> selectVideoByInterVID(int ivid)
         {
-            return await _context.BkVideo
-                .Where(x => x.InterVideo.Equals(ivid))
-                .ToListAsync();
+            List<BkVideo> list = await _context.BkVideo
+                                .Where(x => x.InterVideo.Equals(ivid))
+                                .ToListAsync();
+            List<BKVideoViewModel> list_ = new List<BKVideoViewModel>();
+            foreach (BkVideo i in list)
+            {
+                BKVideoViewModel p = new BKVideoViewModel
+                {
+                    videoID = i.VideoId,
+                    interVideoID = i.InterVideoId,
+                    videoURL = i.VideoUrl,
+                    title = i.Title
+                };
+                list_.Add(p);
+            }
+            return list_;
         }
     }
 }

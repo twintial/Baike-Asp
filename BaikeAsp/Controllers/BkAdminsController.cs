@@ -187,14 +187,14 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPost("AdminLogin")]
-        public async Task<ActionResult> AdminLogin([FromBody] BkAdmin bkAdmin)
+        public ActionResult AdminLogin([FromBody] BKAdminViewModel bkAdmin)
         {
             if (bkAdmin == null)
             {
                 return Ok(CommonResult.Fail("账号密码不能为空"));
             }
-            string account = bkAdmin.Account;
-            string psd = bkAdmin.Password;
+            string account = bkAdmin.account;
+            string psd = bkAdmin.password;
             try
             {
                 if (adminReposity.Detection(account, psd) != null)

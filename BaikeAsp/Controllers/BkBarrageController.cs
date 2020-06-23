@@ -30,7 +30,6 @@ namespace BaikeAsp.Controllers
         [HttpPost("danmaku/v2")]
         public async Task<ActionResult> Send([FromBody] BKBarrageViewModel bKBarrageViewModel)
         {
-            int? uid = HttpContext.Session.GetInt32("userID");
             if (HttpContext.Session.GetInt32("userID") == null)
             {
                 return Ok(CommonResult.Fail("Please Login First"));
@@ -63,12 +62,12 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                List<BkBarrage> proBarrages = await barrageReposity.selectAllBarragesByID(vid);
+                List<BKBarrage> proBarrages = await barrageReposity.selectAllBarragesByID(vid);
                 object[][] barrages = new object[proBarrages.Count()][];
                 for (int i = 0; i < proBarrages.Count(); i++)
                 {
-                    BkBarrage barrage = proBarrages[i];
-                    object[] objects = { barrage.VideoTime, barrage.BType, barrage.Color, barrage.UId, barrage.Content };
+                    BKBarrage barrage = proBarrages[i];
+                    object[] objects = { barrage.videoTime, barrage.bType, barrage.color, barrage.uID, barrage.content };
                     barrages[i] = objects;
                 }
                 return Ok(CommonResult.Success(barrages, "Search Success"));

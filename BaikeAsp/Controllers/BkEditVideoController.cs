@@ -34,7 +34,7 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPost("edit")]
-        public ActionResult getStructure([FromForm] int ivid, [FromForm] string structure)
+        public ActionResult getStructure([FromForm(Name = "ID")] int ivid, [FromForm(Name = "Structure")] string structure)
         {
             solveStructure(structure, ivid);
             return Ok(CommonResult.Success("Commit Success"));
@@ -45,7 +45,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                List<BkVideo> videos = await videoReposity.selectVideoByInterVID(interVideoID);
+                List<BKVideoViewModel> videos = await videoReposity.selectVideoByInterVID(interVideoID);
                 return Ok(CommonResult.Success(videos, "Search Success"));
             }
             catch (Exception)
@@ -153,12 +153,12 @@ namespace BaikeAsp.Controllers
         {
 
             //返回JSON中的视频ID信息
-            List<BkVideo> videos = await videoReposity.selectVideoByInterVID(interVID);
+            List<BKVideoViewModel> videos = await videoReposity.selectVideoByInterVID(interVID);
             for (int i = 0; i < videos.Count(); i++)
             {
-                if (videos[i].Title.Equals(videoName))
+                if (videos[i].title.Equals(videoName))
                 {
-                    return videos[i].VideoId;
+                    return videos[i].videoID;
                 }
             }
             return -1;

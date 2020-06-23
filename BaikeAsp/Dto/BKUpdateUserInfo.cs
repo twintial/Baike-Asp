@@ -9,8 +9,8 @@ namespace BaikeAsp.Dto
     public class BKUpdateUserInfo
     {
         [Required(ErrorMessage = "nickName can't be empty")]
-        public string NickName { get; set; }
+        public string nickName { get; set; }
         [Required(ErrorMessage = "introduction can't be empty")]
-        public string Introduction { get; set; }
+        public string introduction { get; set; }
     }
 }

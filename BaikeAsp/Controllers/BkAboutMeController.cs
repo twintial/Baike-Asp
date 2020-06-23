@@ -48,7 +48,7 @@ namespace BaikeAsp.Controllers
             BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
-                BkUserInfo bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
+                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
                 int uploadVideoNum = await interactiveVideoReposity.getUploadVideoNum((int)uid);
                 int favVideoNum = await collectionReposity.getFavVideoNum((int)uid);
                 int userFollowerNum = await favouriteReposity.getUserFollowerNum((int)uid);
@@ -75,7 +75,7 @@ namespace BaikeAsp.Controllers
             {
                 return Ok(CommonResult.Fail("Please Login First"));
             }
-            BkUserInfo bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
+            BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
             long colNum = await collectionReposity.isCollect((int)uid, vID);
             return Ok(CommonResult.Success(bkUserInfo, colNum.ToString()));
         }
@@ -88,7 +88,7 @@ namespace BaikeAsp.Controllers
             {
                 return Ok(CommonResult.Fail("Please Login First"));
             }
-            PagedList<BkInteractiveVideo> result = await interactiveVideoReposity.selectFavVideoByUid((int)uid, pageNum, 5);
+            PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectFavVideoByUid((int)uid, pageNum, 5);
 
             return Ok(CommonResult.Success(result, "Search Success"));
         }
@@ -157,7 +157,7 @@ namespace BaikeAsp.Controllers
             }
             try
             {
-                userInfoReposity.updateUserInforByID((int)uid, userInfo.NickName, userInfo.Introduction);
+                userInfoReposity.updateUserInforByID((int)uid, userInfo.nickName, userInfo.introduction);
                 await userInfoReposity.SaveAsync();
             }
             catch (Exception)
@@ -192,7 +192,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BkUserInfo bkUserInfo = await userInfoReposity.GetBkUserInfo(oID);
+                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo(oID);
                 return Ok(CommonResult.Success(bkUserInfo, "Search Success"));
             }
             catch (Exception)
@@ -206,7 +206,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                PagedList<BkInteractiveVideo> result = await interactiveVideoReposity.selectFavVideoByUid(oID, pageNum, 5);
+                PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectFavVideoByUid(oID, pageNum, 5);
                 return Ok(CommonResult.Success(result, "Search Success"));
             }
             catch (Exception)
@@ -272,7 +272,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                PagedList<BkInteractiveVideo> result = await interactiveVideoReposity.selectHisVideoByUid(oID, pageNum, 5);
+                PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectHisVideoByUid(oID, pageNum, 5);
                 return Ok(CommonResult.Success(result, "Search Success"));
             }
             catch (Exception)
@@ -312,7 +312,7 @@ namespace BaikeAsp.Controllers
             try
 
             {
-                PagedList<BkInteractiveVideo> result = await interactiveVideoReposity.selectHisVideoByUid((int)uid, pageNum, 5);
+                PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectHisVideoByUid((int)uid, pageNum, 5);
                 return Ok(CommonResult.Success(result, "Search Success"));
             }
             catch (Exception)

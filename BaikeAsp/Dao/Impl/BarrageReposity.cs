@@ -1,4 +1,5 @@
-﻿using BaikeAsp.Models;
+﻿using BaikeAsp.Dto;
+using BaikeAsp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
@@ -22,11 +23,27 @@ namespace BaikeAsp.Dao.Impl
             await _context.BkBarrage.AddAsync(barrage);
         }
 
-        public async Task<List<BkBarrage>> selectAllBarragesByID(int vid)
+        public async Task<List<BKBarrage>> selectAllBarragesByID(int vid)
         {
-            return await _context.BkBarrage
-                .Where(x => x.VideoId.Equals(vid))
-                .ToListAsync();
+            List<BkBarrage> list = await _context.BkBarrage
+                                        .Where(x => x.VideoId.Equals(vid))
+                                        .ToListAsync();
+            List<BKBarrage> list_ = new List<BKBarrage>();
+            foreach (BkBarrage i in list)
+            {
+                BKBarrage p = new BKBarrage
+                {
+                    uID = i.UId,
+                    videoID = i.VideoId,
+                    content = i.Content,
+                    sendTime = i.SendTime,
+                    videoTime = i.VideoTime,
+                    color = i.Color,
+                    bType = i.BType
+                };
+                list_.Add(p);
+            }
+            return list_;
         }
 
         public async Task<bool> SaveAsync()

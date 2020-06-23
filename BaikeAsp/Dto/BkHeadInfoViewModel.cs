@@ -16,7 +16,7 @@ namespace BaikeAsp.Dto
 
         public int usersFollowNum { get; set; }
 
-        public virtual BkUserInfo U { get; set; }
+        public virtual BKUserInfoViewModel U { get; set; }
 
     }
 }

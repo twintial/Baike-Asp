@@ -46,7 +46,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BkUserInfo bkUserInfo = await userInfoReposity.GetBkUserInfo(uid);
+                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo(uid);
                 return Ok(CommonResult.Success(bkUserInfo, "Search Success"));
             }
             catch (Exception)
