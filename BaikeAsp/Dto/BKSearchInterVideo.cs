@@ -8,7 +8,7 @@ namespace BaikeAsp.Dto
     public class BKSearchInterVideo
     {
         public int Uid { get; set; }
-        public int InterVideoId { get; set; }
+        public int InterVideoID { get; set; }
         public string VideoName { get; set; }
         public string Introduction { get; set; }
         public int PlayVolume { get; set; }
@@ -18,7 +18,7 @@ namespace BaikeAsp.Dto
         public int State { get; set; }
         public long UploadTime { get; set; }
         public string Icon { get; set; }
-        public int? InitVideoId { get; set; }
+        public int? InitVideoID { get; set; }
         public string NickName { get; set; }
     }
 }

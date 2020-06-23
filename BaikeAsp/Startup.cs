@@ -45,9 +45,16 @@ namespace BaikeAsp
                 options.UseMySql(Configuration.GetConnectionString("BaikeDatabase")).UseLoggerFactory(efLogger);
             });
             services.AddCors(options => options.AddPolicy("cors", p => p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
-
             services.AddScoped<IUserReposity, UserReposity>();
             services.AddScoped<IUserInfoReposity, UserInfoReposity>();
+            services.AddScoped<IInteractiveVideoReposity, InteractiveVideoReposity>();
+            services.AddScoped<IFavouriteReposity, FavouriteReposity>();
+            services.AddScoped<ICollectionReposity, CollectionReposity>();
+            services.AddScoped<IBrowseHistoryReposity, BrowseHistoryReposity>();
+            services.AddScoped<IAdminReposity, AdminReposity>();
+            services.AddScoped<IBarrageReposity, BarrageReposity>();
+            services.AddScoped<IVideoReposity, VideoReposity>();
+            services.AddScoped<INextVideoReposity, NextVideoReposity>();
             services.AddScoped<ICollectionReposity, CollectionReposity>();
             services.AddScoped<IFavouriteReposity, FavouriteReposity>();
             services.AddScoped<IInteractiveVideoReposity, InteractiveVideoReposity>();
@@ -67,7 +74,7 @@ namespace BaikeAsp
                     appBuilder.Run(async context =>
                     {
                         context.Response.StatusCode = 500;
-                        // ÔÝÊ±ÕâÑùÐ´
+                        // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð´
                         await context.Response.WriteAsync("Server Error");
                     });
                 });
@@ -75,7 +82,7 @@ namespace BaikeAsp
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                // ÅäÖÃ¾²Ì¬Ä¿Â¼
+                // ï¿½ï¿½ï¿½Ã¾ï¿½Ì¬Ä¿Â¼
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "resources")),
                 RequestPath = "",
             });

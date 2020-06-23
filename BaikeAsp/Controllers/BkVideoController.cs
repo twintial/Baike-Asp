@@ -38,6 +38,13 @@ namespace BaikeAsp.Controllers
             return Ok(new { List = videos, PageNum = count });
         }
 
+        [HttpGet("category/{tag}/{size}")]
+        public async Task<IActionResult> category(string tag, int size)
+        {
+            var videos = await _interactiveVideoReposity.SearchVideosByTag(tag, 1, size);
+            return Ok(videos);
+        }
+
         [HttpGet("playVolume")]
         public async Task<IActionResult> SelectByPlayVolume()
         {
