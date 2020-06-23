@@ -34,7 +34,7 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPost("edit")]
-        public ActionResult getStructure([FromForm] int ivid, [FromForm] string structure)
+        public ActionResult getStructure([FromForm(Name = "ID")] int ivid, [FromForm(Name = "Structure")] string structure)
         {
             solveStructure(structure, ivid);
             return Ok(CommonResult.Success("Commit Success"));
