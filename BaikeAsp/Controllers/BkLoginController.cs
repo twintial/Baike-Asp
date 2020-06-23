@@ -48,6 +48,7 @@ namespace BaikeAsp.Controllers
             {
                 return Ok(CommonResult.Fail("already login"));
             }
+            // 会找不到用户，需要Try-catch
             BkUser user = await _userReposity.GetUserByAccount(loginInfo.Account);
             if (user == null)
             {

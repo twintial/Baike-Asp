@@ -76,7 +76,7 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPost("cover/upload")]
-        public async Task<IActionResult> CoverUpload([FromForm(Name = "file")] IFormFile file)
+        public async Task<IActionResult> CoverUpload([FromForm(Name = "videoCover")] IFormFile file)
         {
             var result = await FileUtil.CreateTempFile(file);
             // 用用看这种形式
@@ -103,20 +103,22 @@ namespace BaikeAsp.Controllers
                 UId = (int)uId,
                 State = 1,
                 UploadTime = new DateTime(),
-                Icon = uploadViewModel.Icon,
+                Icon = uploadViewModel.CoverUUID,
                 VideoName = uploadViewModel.VideoName,
                 Introduction = uploadViewModel.Introduction,
                 Tag = uploadViewModel.Tag
             };
             _interactiveVideoReposity.AddInterVideo(interVideoModel);
+            await _interactiveVideoReposity.SaveAsync();
             // 移动封面
             string coverPath = Path.Combine(ResourcePath.VIDEO_COVER, interVideoModel.InterVideoId.ToString());
             Directory.CreateDirectory(coverPath);
             System.IO.File.Move(Path.Combine(ResourcePath.TEMP, uploadViewModel.CoverUUID),
                 Path.Combine(coverPath, uploadViewModel.CoverUUID));
             // 移动视频
-            string videoPath = Path.Combine(ResourcePath.VIDEO, uploadViewModel.InterVideoID.ToString());
-            foreach(var videoUUID in uploadViewModel.VideoFilesUUID)
+            string videoPath = Path.Combine(ResourcePath.VIDEO, interVideoModel.InterVideoId.ToString());
+            Directory.CreateDirectory(videoPath);
+            foreach (var videoUUID in uploadViewModel.VideoFilesUUID)
             {
                 System.IO.File.Move(Path.Combine(ResourcePath.TEMP, videoUUID),
                 Path.Combine(videoPath, videoUUID));
@@ -128,7 +130,7 @@ namespace BaikeAsp.Controllers
             {
                 var video = new BkVideo
                 {
-                    InterVideoId = uploadViewModel.InterVideoID,
+                    InterVideoId = interVideoModel.InterVideoId,
                     Title = $@"p{i + 1}_{uploadViewModel.VIdeoNames[i]}",
                     VideoUrl = Path.Combine("video", uploadViewModel.InterVideoID.ToString(), uploadViewModel.VideoFilesUUID[i])
                 };
@@ -136,7 +138,7 @@ namespace BaikeAsp.Controllers
             }
             _interactiveVideoReposity.AddVideos(videos);
             await _interactiveVideoReposity.SaveAsync();
-            return Ok();
+            return Ok(CommonResult.Success("upload success"));
         }
     }
 }

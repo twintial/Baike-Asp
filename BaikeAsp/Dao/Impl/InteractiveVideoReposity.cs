@@ -352,7 +352,7 @@ namespace BaikeAsp.Dao.Impl
         public async Task<PagedList<BKInteractiveVideoViewModel>> selectInterVideosByUserIf(int uid, VideoState state, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkInteractiveVideo
-                         where st.State.Equals(state) && st.UId.Equals(uid)
+                         where st.State.Equals(state.GetHashCode()) && st.UId.Equals(uid)
                          select new BKInteractiveVideoViewModel
                          {
                              interVideoID = st.InterVideoId,
