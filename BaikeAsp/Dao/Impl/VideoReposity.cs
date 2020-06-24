@@ -19,7 +19,7 @@ namespace BaikeAsp.Dao.Impl
         public async Task<List<BKVideoViewModel>> selectVideoByInterVID(int ivid)
         {
             List<BkVideo> list = await _context.BkVideo
-                                .Where(x => x.InterVideo.Equals(ivid))
+                                .Where(x => x.InterVideoId.Equals(ivid))
                                 .ToListAsync();
             List<BKVideoViewModel> list_ = new List<BKVideoViewModel>();
             foreach (BkVideo i in list)
