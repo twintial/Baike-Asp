@@ -102,7 +102,7 @@ namespace BaikeAsp.Controllers
         [HttpPost("history")]
         public async Task<ActionResult> insertHistory([FromBody] BKBrowseHistoryViewModel bkBrowseHistory)
         {
-            bkBrowseHistory.watchDate = new DateTime();
+            bkBrowseHistory.watchDate = DateTime.Now;
             BkBrowseHistory browseHistory = new BkBrowseHistory
             {
                 UId = bkBrowseHistory.uID,

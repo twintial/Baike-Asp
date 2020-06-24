@@ -42,7 +42,7 @@ namespace BaikeAsp.Controllers
                     UId = int.Parse(bKBarrageViewModel.author),
                     Content = bKBarrageViewModel.text,
                     VideoTime = bKBarrageViewModel.time,
-                    SendTime = new DateTime(),
+                    SendTime = DateTime.Now,
                     Color = bKBarrageViewModel.color,
                     BType = (int)BarrageMap.typeMap[bKBarrageViewModel.type],
                     VideoId = bKBarrageViewModel.Player

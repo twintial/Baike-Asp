@@ -46,12 +46,13 @@ namespace BaikeAsp.Controllers
                 int userFollowerNum = await favouriteReposity.getUserFollowerNum((int)uid);
                 int usersFollowNum = await favouriteReposity.getUsersFollowNum((int)uid);
 
-                bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
-                bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
-                bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
-                bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
-                bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
-                bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                //bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                //bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                //bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                //bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                //bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                //bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                bkHeadInfoViewModel.U = bkUserInfoViewModel;
 
                 bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
                 bkHeadInfoViewModel.favVideoNum = favVideoNum;
@@ -197,12 +198,13 @@ namespace BaikeAsp.Controllers
                 int userFollowerNum = await favouriteReposity.getUserFollowerNum(oID);
                 int usersFollowNum = await favouriteReposity.getUsersFollowNum(oID);
 
-                bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
-                bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
-                bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
-                bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
-                bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
-                bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                //bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                //bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                //bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                //bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                //bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                //bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                bkHeadInfoViewModel.U = bkUserInfoViewModel;
 
                 bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
                 bkHeadInfoViewModel.favVideoNum = favVideoNum;

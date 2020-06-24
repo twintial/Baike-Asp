@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaikeAsp.Dto
 {
-    public partial class BKHeadInfoViewModel : BKUserInfoViewModel
+    public partial class BKHeadInfoViewModel
     {
         public int uploadVideoNum { get; set; }
 
@@ -15,5 +15,7 @@ namespace BaikeAsp.Dto
         public int userFollowerNum { get; set; }
 
         public int usersFollowNum { get; set; }
+
+        public virtual BKUserInfoViewModel U { get; set; }
     }
 }

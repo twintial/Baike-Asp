@@ -388,7 +388,7 @@ namespace BaikeAsp.Dao.Impl
                                                         .FirstOrDefaultAsync();
 
             BkVideo bkVideo = await _context.BkVideo
-                .Where(x => x.VideoId.Equals(bkInteractiveVideo.InterVideoId))
+                .Where(x => x.VideoId.Equals(bkInteractiveVideo.InitVideoId))
                 .FirstOrDefaultAsync();
 
             BKVideoViewModel bKVideoViewModel = new BKVideoViewModel
