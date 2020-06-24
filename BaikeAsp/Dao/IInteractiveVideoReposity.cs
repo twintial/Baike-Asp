@@ -24,7 +24,9 @@ namespace BaikeAsp.Dao
         void updateInterVideoStartVideo(int intervideoid, int initvideoid);
         Task<bool> deleteInteractiveVideoByID(int vid);
         Task<int> selectInterVideoStateByID(int intervideoid);
+        int selectInterVideoStateByID_T(int intervideoid);
         Task<int?> selectInitVideoIDByID(int intervideoid);
+        int? selectInitVideoIDByID_T(int intervideoid);
         int GetVideoCountByUid(int uid);
         Task<List<BKSearchInterVideo>> SearchVideos(string searchName, string tag, int page, int size);
 
@@ -43,5 +45,6 @@ namespace BaikeAsp.Dao
         void AddVideos(List<BkVideo> videos);
         void AddInterVideo(BkInteractiveVideo interactiveVideo);
         Task<bool> SaveAsync();
+        bool Save();
     }
 }

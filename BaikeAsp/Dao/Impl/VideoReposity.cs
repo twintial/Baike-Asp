@@ -16,11 +16,11 @@ namespace BaikeAsp.Dao.Impl
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        public async Task<List<BKVideoViewModel>> selectVideoByInterVID(int ivid)
+        public List<BKVideoViewModel> selectVideoByInterVID(int ivid)
         {
-            List<BkVideo> list = await _context.BkVideo
-                                .Where(x => x.InterVideoId.Equals(ivid))
-                                .ToListAsync();
+            List<BkVideo> list = _context.BkVideo
+                                    .Where(x => x.InterVideoId.Equals(ivid))
+                                    .ToList();
             List<BKVideoViewModel> list_ = new List<BKVideoViewModel>();
             foreach (BkVideo i in list)
             {
@@ -33,6 +33,7 @@ namespace BaikeAsp.Dao.Impl
                 };
                 list_.Add(p);
             }
+
             return list_;
         }
     }

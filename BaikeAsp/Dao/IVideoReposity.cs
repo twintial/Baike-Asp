@@ -9,6 +9,6 @@ namespace BaikeAsp.Dao
 {
     public interface IVideoReposity
     {
-        Task<List<BKVideoViewModel>> selectVideoByInterVID(int ivid);
+        List<BKVideoViewModel> selectVideoByInterVID(int ivid);
     }
 }

@@ -41,11 +41,11 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpGet("edit/{interVideoID}")]
-        public async Task<ActionResult> getVideoListByInterVID([FromRoute] int interVideoID)
+        public ActionResult getVideoListByInterVID([FromRoute] int interVideoID)
         {
             try
             {
-                List<BKVideoViewModel> videos = await videoReposity.selectVideoByInterVID(interVideoID);
+                List<BKVideoViewModel> videos = videoReposity.selectVideoByInterVID(interVideoID);
                 return Ok(CommonResult.Success(videos, "Search Success"));
             }
             catch (Exception)
@@ -54,56 +54,58 @@ namespace BaikeAsp.Controllers
             }
         }
 
-        public async void solveStructure(string structure, int interVID)
+        public void solveStructure(string structure, int interVID)
         {
             //获取JSON字符串
             JObject jsonObject = JObject.Parse(structure);
             //获取起始视频
             string startVideoName = Convert.ToString(jsonObject["video"]);
             //获取起始视频ID
-            int startVideoID = await returnVideoID(startVideoName, interVID);
+            int startVideoID = returnVideoID(startVideoName, interVID);
             //更新表数据
             interactiveVideoReposity.updateInterVideoStartVideo(interVID, startVideoID);
+            interactiveVideoReposity.Save();
             //检测视频是否已被编辑，如果已被编辑，先删除之前的数据
             deleteStructure(interVID);
             //向数据库插入视频结构信息
             getRelationship(jsonObject, interVID);
         }
 
-        public async void deleteStructure(int interVID)
+        public bool deleteStructure(int interVID)
         {
 
             //获取interVideo的状态信息，为1则退出。为2则删除数据
-            int state = await interactiveVideoReposity.selectInterVideoStateByID(interVID);
+            int state = interactiveVideoReposity.selectInterVideoStateByID_T(interVID);
             if (state == 1)
             {
-                return;
+                return true;
             }
             else
             {
-                int initVideoID = (int)await interactiveVideoReposity.selectInitVideoIDByID(interVID);
-                List<BkNextVideo> nextVideos = await nextVideoReposity.selectNextVideoByVideoID(initVideoID);
+                int initVideoID = (int)interactiveVideoReposity.selectInitVideoIDByID_T(interVID);
+                List<BkNextVideo> nextVideos = nextVideoReposity.selectNextVideoByVideoID_T(initVideoID);
                 if (nextVideos.Count() == 0)
                 {
-                    return;
+                    return true;
                 }
                 for (int i = 0; i < nextVideos.Count(); i++)
                 {
                     int nextVideoID = nextVideos[i].NextVideoId;
                     deleteRelationship(nextVideoID);
                 }
-                nextVideoReposity.deleteNextVideoByID(initVideoID);
-                return;
+                nextVideoReposity.deleteNextVideoByID_T(initVideoID);
+                nextVideoReposity.Save();
+                return true;
             }
         }
 
-        public async void deleteRelationship(int nextVideoID)
+        public bool deleteRelationship(int nextVideoID)
         {
             int nowVideoID = nextVideoID;
-            List<BkNextVideo> nextVideos = await nextVideoReposity.selectNextVideoByVideoID(nowVideoID);
+            List<BkNextVideo> nextVideos = nextVideoReposity.selectNextVideoByVideoID_T(nowVideoID);
             if (nextVideos.Count() == 0)
             {
-                return;
+                return true;
             }
             else
             {
@@ -112,12 +114,13 @@ namespace BaikeAsp.Controllers
                     int next = nextVideos[i].NextVideoId;
                     deleteRelationship(next);
                 }
-                nextVideoReposity.deleteNextVideoByID(nowVideoID);
-                return;
+                nextVideoReposity.deleteNextVideoByID_T(nowVideoID);
+                nextVideoReposity.Save();
+                return true;
             }
         }
 
-        public async void getRelationship(JObject jsonObject, int interVID)
+        public bool getRelationship(JObject jsonObject, int interVID)
         {
 
             //递归遍历JSON树，将分支选项和视频插入数据库
@@ -130,30 +133,31 @@ namespace BaikeAsp.Controllers
                     JObject childJsonObject = JObject.Parse(jsonArray[i].ToString());
                     string childVideoName = Convert.ToString(childJsonObject["video"]);
                     string childVideoPlot = Convert.ToString(childJsonObject["plot"]);
-                    int childVideoID = await returnVideoID(childVideoName, interVID);
-                    int nowVideoID = await returnVideoID(nowVideoName, interVID);
+                    int childVideoID = returnVideoID(childVideoName, interVID);
+                    int nowVideoID = returnVideoID(nowVideoName, interVID);
 
                     BkNextVideo bkNextVideo = new BkNextVideo();
                     bkNextVideo.VideoId = nowVideoID;
                     bkNextVideo.NextVideoId = childVideoID;
                     bkNextVideo.Choice = childVideoPlot;
 
-                    nextVideoReposity.insertNextVideo(bkNextVideo);
+                    nextVideoReposity.insertNextVideo_T(bkNextVideo);
+                    nextVideoReposity.Save();
 
                     getRelationship(childJsonObject, interVID);
                 }
+                return true;
             }
             else
             {
-                return;
+                return true;
             }
         }
 
-        public async Task<int> returnVideoID(string videoName, int interVID)
+        public int returnVideoID(string videoName, int interVID)
         {
-
             //返回JSON中的视频ID信息
-            List<BKVideoViewModel> videos = await videoReposity.selectVideoByInterVID(interVID);
+            List<BKVideoViewModel> videos = videoReposity.selectVideoByInterVID(interVID);
             for (int i = 0; i < videos.Count(); i++)
             {
                 if (videos[i].title.Equals(videoName))
