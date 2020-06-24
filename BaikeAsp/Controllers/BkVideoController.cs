@@ -102,7 +102,7 @@ namespace BaikeAsp.Controllers
             {
                 UId = (int)uId,
                 State = 1,
-                UploadTime = new DateTime(),
+                UploadTime = DateTime.Now,
                 Icon = uploadViewModel.CoverUUID,
                 VideoName = uploadViewModel.VideoName,
                 Introduction = uploadViewModel.Introduction,
@@ -132,7 +132,7 @@ namespace BaikeAsp.Controllers
                 {
                     InterVideoId = interVideoModel.InterVideoId,
                     Title = $@"p{i + 1}_{uploadViewModel.VIdeoNames[i]}",
-                    VideoUrl = Path.Combine("video", uploadViewModel.InterVideoID.ToString(), uploadViewModel.VideoFilesUUID[i])
+                    VideoUrl = Path.Combine("video", interVideoModel.InterVideoId.ToString(), uploadViewModel.VideoFilesUUID[i])
                 };
                 videos.Add(video);
             }
