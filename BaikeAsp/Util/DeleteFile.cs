@@ -14,8 +14,9 @@ namespace BaikeAsp.Util
             {
                 return false;
             }
-            if (file is DirectoryInfo file_x)
+            if ((file.Attributes & FileAttributes.Directory) == FileAttributes.Directory)
             {
+                DirectoryInfo file_x = (DirectoryInfo)file;
                 FileSystemInfo[] files = file_x.GetFileSystemInfos();
                 foreach (FileSystemInfo i in files)
                 {

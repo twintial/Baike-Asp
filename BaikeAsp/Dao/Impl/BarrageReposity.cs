@@ -33,7 +33,7 @@ namespace BaikeAsp.Dao.Impl
             {
                 BKBarrage p = new BKBarrage
                 {
-                    uID = i.UId,
+                    uid = i.UId,
                     videoID = i.VideoId,
                     content = i.Content,
                     sendTime = i.SendTime,

@@ -8,7 +8,7 @@ namespace BaikeAsp.Dto
 {
     public class BKUserInfoViewModel
     {
-        public int uID { get; set; }
+        public int uid { get; set; }
 
         public string nickName { get; set; }
 

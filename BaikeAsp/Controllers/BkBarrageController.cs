@@ -42,7 +42,7 @@ namespace BaikeAsp.Controllers
                     UId = int.Parse(bKBarrageViewModel.author),
                     Content = bKBarrageViewModel.text,
                     VideoTime = bKBarrageViewModel.time,
-                    SendTime = new DateTime(),
+                    SendTime = DateTime.Now,
                     Color = bKBarrageViewModel.color,
                     BType = (int)BarrageMap.typeMap[bKBarrageViewModel.type],
                     VideoId = bKBarrageViewModel.Player
@@ -67,7 +67,7 @@ namespace BaikeAsp.Controllers
                 for (int i = 0; i < proBarrages.Count(); i++)
                 {
                     BKBarrage barrage = proBarrages[i];
-                    object[] objects = { barrage.videoTime, barrage.bType, barrage.color, barrage.uID, barrage.content };
+                    object[] objects = { barrage.videoTime, barrage.bType, barrage.color, barrage.uid, barrage.content };
                     barrages[i] = objects;
                 }
                 return Ok(CommonResult.Success(barrages, "Search Success"));

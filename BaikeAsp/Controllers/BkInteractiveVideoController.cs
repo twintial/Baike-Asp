@@ -67,15 +67,15 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                if (!DeleteFile.deleteFile(new FileInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
+                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Cover Delete Fail"));
                 }
-                if (!DeleteFile.deleteFile(new FileInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
+                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Video Delete Fail"));
                 }
-                interactiveVideoReposity.deleteInteractiveVideoByID(interVideoID);
+                await interactiveVideoReposity.deleteInteractiveVideoByID(interVideoID);
                 await interactiveVideoReposity.SaveAsync();
                 return Ok(CommonResult.Success("Delete Success"));
             }
@@ -90,7 +90,7 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                BKInteractiveVideoViewModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
+                BKVideoPlayVideoModel bkInteractiveVideo = await interactiveVideoReposity.findVideoPlayPageInfo(vID);
                 return Ok(CommonResult.Success(bkInteractiveVideo, "Search Success"));
             }
             catch (Exception)
@@ -102,10 +102,10 @@ namespace BaikeAsp.Controllers
         [HttpPost("history")]
         public async Task<ActionResult> insertHistory([FromBody] BKBrowseHistoryViewModel bkBrowseHistory)
         {
-            bkBrowseHistory.watchDate = new DateTime();
+            bkBrowseHistory.watchDate = DateTime.Now;
             BkBrowseHistory browseHistory = new BkBrowseHistory
             {
-                UId = bkBrowseHistory.uID,
+                UId = bkBrowseHistory.uid,
                 WatchVideoId = bkBrowseHistory.watchVideoID,
                 WatchDate = bkBrowseHistory.watchDate
             };
@@ -126,7 +126,7 @@ namespace BaikeAsp.Controllers
         [HttpPost("insert/collection")]
         public async Task<ActionResult> insertCollection([FromBody] BKCollectionViewModel collection)
         {
-            int? cuid = collection.uID;
+            int? cuid = collection.uid;
             int? fvid = collection.favVideoID;
             if (cuid == null)
             {
@@ -138,7 +138,7 @@ namespace BaikeAsp.Controllers
             }
             BkCollection bkCollection = new BkCollection
             {
-                UId = collection.uID,
+                UId = collection.uid,
                 FavVideoId = collection.favVideoID
             };
             try
@@ -154,7 +154,7 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpDelete("delete/collection/{uID}/{vID}")]
-        public ActionResult deleteCollection([FromRoute] int uID, [FromRoute] int vID)
+        public async Task<ActionResult> deleteCollection([FromRoute] int uID, [FromRoute] int vID)
         {
             BkCollection collection = new BkCollection
             {
@@ -174,6 +174,7 @@ namespace BaikeAsp.Controllers
                     return Ok(CommonResult.Fail("Error"));
                 }
                 collectionReposity.deleteCollection(collection);
+                await collectionReposity.SaveAsync();
                 return Ok(CommonResult.Success("Delete Success"));
             }
             catch (Exception)

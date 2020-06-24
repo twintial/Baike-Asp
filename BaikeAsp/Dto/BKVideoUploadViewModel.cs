@@ -8,7 +8,7 @@ namespace BaikeAsp.Dto
 {
     public class BKVideoUploadViewModel
     {
-        public int UID { get; set; }
+        public int Uid { get; set; }
         public int InterVideoID { get; set; }
         public string VideoName { get; set; }
         public string Introduction { get; set; }

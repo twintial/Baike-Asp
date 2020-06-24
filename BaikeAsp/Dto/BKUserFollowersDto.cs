@@ -7,7 +7,7 @@ namespace BaikeAsp.Dto
 {
     public class BKUserFollowersDto
     {
-        public int uID { get; set; }
+        public int uid { get; set; }
         public string nickName { get; set; }
         public string iconURL { get; set; }
     }

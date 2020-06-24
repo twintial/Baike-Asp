@@ -7,7 +7,7 @@ namespace BaikeAsp.Dto
 {
     public class BKBrowseHistoryViewModel
     {
-        public int uID { get; set; }
+        public int uid { get; set; }
         public int watchVideoID { get; set; }
         public DateTime watchDate { get; set; }
     }

@@ -7,7 +7,7 @@ namespace BaikeAsp.Dto
 {
     public class BKCollectionViewModel
     {
-        public int uID { get; set; }
+        public int uid { get; set; }
         public int favVideoID { get; set; }
     }
 }

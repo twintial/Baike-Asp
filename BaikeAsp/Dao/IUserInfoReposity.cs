@@ -14,7 +14,9 @@ namespace BaikeAsp.Dao
         Task<PagedList<BKUserFollowersDto>> selectUserFollowersByUid(int uid, int pageNum, int pageSize);
         Task<PagedList<BKUserFollowersDto>> selectUsersFollowByUid(int uid, int pageNum, int pageSize);
         public Task<int> GetState(int uID);
-        void updateUserInforByID(int uid, string newNickName, string newIntroduction);
+        Task<bool> updateUserInforByID(int uid, string newNickName, string newIntroduction);
+        Task<bool> updateUserIconByID(int uid, string icon);
+        Task<bool> updateUserBackgroundIconByID(int uid, string bgIcon);
         Task<bool> SaveAsync();
         Task<PagedList<BKUserState>> selectByName(string title, int state, int pageNum, int pageSize);
         Task<PagedList<BKUserState>> selectByTime(string title, int state, int pageNum, int pageSize);

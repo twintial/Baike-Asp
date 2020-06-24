@@ -11,7 +11,7 @@ namespace BaikeAsp.Dao
         Task<int> getFavVideoNum(int uid);
         Task<long> isCollect(int uid, int vid);
 
-        void deleteFavVideoByID(int uid, int favid);
+        Task<bool> deleteFavVideoByID(int uid, int favid);
         void deleteCollection(BkCollection collection);
 
         Task<bool> SaveAsync();

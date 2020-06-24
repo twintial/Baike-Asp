@@ -14,6 +14,7 @@ using BaikeAsp.Dao;
 using Microsoft.VisualBasic;
 using System.Security.Principal;
 using System.Security.Cryptography.Xml;
+using AutoMapper;
 
 namespace BaikeAsp.Controllers
 {
@@ -21,24 +22,24 @@ namespace BaikeAsp.Controllers
     [ApiController]
     public class BkCommentController : ControllerBase
     {
-        private readonly IBarrageReposity barrageReposity;
-        public BkCommentController(IBarrageReposity barrage)
+        private readonly ICommentReposity commentReposity;
+        private readonly IMapper mapper;
+
+        public BkCommentController(ICommentReposity commentReposity, IMapper mapper)
         {
-            barrageReposity = barrage ?? throw new ArgumentNullException(nameof(barrageReposity));
+            this.commentReposity = commentReposity ?? throw new ArgumentNullException(nameof(BkCommentController.commentReposity));
+            this.mapper = mapper;
         }
 
-        //[HttpPost("send/comment")]
-        //public Task<ActionResult> sendComment()
-        //{
-        //    try
-        //    {
-        //        return Ok(CommonResult.Success("Send Success"));
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return NotFound(CommonResult.Fail("Send Fail"));
-        //    }
-        //}
+        [HttpPost("send/comment")]
+        public async Task<ActionResult> sendComment([FromBody] BKCommentsViewModel bKCommentsView)
+        {
+            bKCommentsView.SendTime = DateTime.Now;
+            var comment = mapper.Map<BkComments>(bKCommentsView);
+            commentReposity.AddComment(comment);
+            await commentReposity.SaveAsync();
+            return Ok(CommonResult.Success(bKCommentsView, "send successfully"));
+        }
     }
 }
 

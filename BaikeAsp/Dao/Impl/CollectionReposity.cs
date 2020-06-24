@@ -22,11 +22,12 @@ namespace BaikeAsp.Dao.Impl
             _context.BkCollection.Remove(collection);
         }
 
-        public async void deleteFavVideoByID(int uid, int favid)
+        public async Task<bool> deleteFavVideoByID(int uid, int favid)
         {
             BkCollection bkCollection = await _context.BkCollection
                 .Where(x => x.UId.Equals(uid) && x.FavVideoId.Equals(favid)).FirstAsync();
             _context.BkCollection.Remove(bkCollection);
+            return true;
         }
 
         public async Task<int> getFavVideoNum(int uid)

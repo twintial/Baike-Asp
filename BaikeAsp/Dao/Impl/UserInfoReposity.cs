@@ -22,7 +22,7 @@ namespace BaikeAsp.Dao.Impl
             BkUserInfo bkUserInfo = await _context.BkUserInfo.Where(x => x.UId.Equals(uid)).FirstOrDefaultAsync();
             BKUserInfoViewModel bKUserInfoViewModel = new BKUserInfoViewModel
             {
-                uID = bkUserInfo.UId,
+                uid = bkUserInfo.UId,
                 nickName = bkUserInfo.NickName,
                 iconURL = bkUserInfo.Icon,
                 state = bkUserInfo.State,
@@ -39,7 +39,7 @@ namespace BaikeAsp.Dao.Impl
                          where gl.FavUserId.Equals(uid) && st.State != 0
                          select new BKUserFollowersDto
                          {
-                             uID = st.UId,
+                             uid = st.UId,
                              nickName = st.NickName,
                              iconURL = st.Icon
                          });
@@ -50,11 +50,11 @@ namespace BaikeAsp.Dao.Impl
         public async Task<PagedList<BKUserFollowersDto>> selectUsersFollowByUid(int uid, int pageNum, int pageSize)
         {
             var query = (from st in _context.BkUserInfo
-                         join gl in _context.BkFavourite on st.UId equals gl.UId
+                         join gl in _context.BkFavourite on st.UId equals gl.FavUserId
                          where gl.UId.Equals(uid) && st.State != 0
                          select new BKUserFollowersDto
                          {
-                             uID = st.UId,
+                             uid = st.UId,
                              nickName = st.NickName,
                              iconURL = st.Icon
                          });
@@ -70,7 +70,7 @@ namespace BaikeAsp.Dao.Impl
                 .FirstAsync();
         }
 
-        public async void updateUserInforByID(int uid, string newNickName, string newIntroduction)
+        public async Task<bool> updateUserInforByID(int uid, string newNickName, string newIntroduction)
         {
             BkUserInfo userInfo = await _context.BkUserInfo
                 .Where(x => x.UId.Equals(uid))
@@ -80,6 +80,7 @@ namespace BaikeAsp.Dao.Impl
             userInfo.Introduction = newIntroduction;
 
             _context.Entry(userInfo).State = EntityState.Modified;
+            return true;
         }
 
         public async Task<bool> SaveAsync()
@@ -94,7 +95,7 @@ namespace BaikeAsp.Dao.Impl
                          orderby st.NickName descending
                          select new BKUserState
                          {
-                             uID = st.UId,
+                             uid = st.UId,
                              nickName = st.NickName,
                              iconURL = st.Icon,
                              introduction = st.Introduction,
@@ -111,7 +112,7 @@ namespace BaikeAsp.Dao.Impl
                          orderby st.UId descending
                          select new BKUserState
                          {
-                             uID = st.UId,
+                             uid = st.UId,
                              nickName = st.NickName,
                              iconURL = st.Icon,
                              introduction = st.Introduction,
@@ -130,6 +131,30 @@ namespace BaikeAsp.Dao.Impl
             userInfo.State = 1 - userInfo.State;
 
             _context.Entry(userInfo).State = EntityState.Modified;
+        }
+
+        public async Task<bool> updateUserIconByID(int uid, string icon)
+        {
+            BkUserInfo userInfo = await _context.BkUserInfo
+                .Where(x => x.UId.Equals(uid))
+                .FirstOrDefaultAsync();
+
+            userInfo.Icon = icon;
+
+            _context.Entry(userInfo).State = EntityState.Modified;
+            return true;
+        }
+
+        public async Task<bool> updateUserBackgroundIconByID(int uid, string bgIcon)
+        {
+            BkUserInfo userInfo = await _context.BkUserInfo
+                .Where(x => x.UId.Equals(uid))
+                .FirstOrDefaultAsync();
+
+            userInfo.BackgroundIcon = bgIcon;
+
+            _context.Entry(userInfo).State = EntityState.Modified;
+            return true;
         }
     }
 }

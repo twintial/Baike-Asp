@@ -8,7 +8,7 @@ namespace BaikeAsp.Dao
 {
     public interface IBrowseHistoryReposity
     {
-        void deleteBrowseHistoryByID(int uid, int favid);
+        Task<bool> deleteBrowseHistoryByID(int uid, int favid);
         void insertBrowseHistory(BkBrowseHistory bkBrowseHistory);
         void updateBrowseHistory(BkBrowseHistory bkBrowseHistory);
         Task<bool> SaveAsync();

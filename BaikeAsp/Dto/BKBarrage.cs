@@ -7,7 +7,7 @@ namespace BaikeAsp.Dto
 {
     public class BKBarrage
     {
-        public int uID { get; set; }
+        public int uid { get; set; }
 
         public int videoID { get; set; }
 

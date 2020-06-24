@@ -6,6 +6,7 @@ using BaikeAsp.Dao;
 using BaikeAsp.Util;
 using BaikeAsp.Common;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BaikeAsp.Controllers
 {
@@ -40,13 +41,20 @@ namespace BaikeAsp.Controllers
             BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
-                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo((int)uid);
+                BKUserInfoViewModel bkUserInfoViewModel = await userInfoReposity.GetBkUserInfo((int)uid);
                 int uploadVideoNum = await interactiveVideoReposity.getUploadVideoNum((int)uid);
                 int favVideoNum = await collectionReposity.getFavVideoNum((int)uid);
                 int userFollowerNum = await favouriteReposity.getUserFollowerNum((int)uid);
                 int usersFollowNum = await favouriteReposity.getUsersFollowNum((int)uid);
 
-                bkHeadInfoViewModel.U = bkUserInfo;
+                //bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                //bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                //bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                //bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                //bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                //bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                bkHeadInfoViewModel.U = bkUserInfoViewModel;
+
                 bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
                 bkHeadInfoViewModel.favVideoNum = favVideoNum;
                 bkHeadInfoViewModel.userFollowerNum = userFollowerNum;
@@ -95,7 +103,7 @@ namespace BaikeAsp.Controllers
             }
             try
             {
-                collectionReposity.deleteFavVideoByID((int)uid, interVideoID);
+                await collectionReposity.deleteFavVideoByID((int)uid, interVideoID);
                 await collectionReposity.SaveAsync();
             }
             catch (Exception)
@@ -149,7 +157,7 @@ namespace BaikeAsp.Controllers
             }
             try
             {
-                userInfoReposity.updateUserInforByID((int)uid, userInfo.nickName, userInfo.introduction);
+                await userInfoReposity.updateUserInforByID((int)uid, userInfo.nickName, userInfo.introduction);
                 await userInfoReposity.SaveAsync();
             }
             catch (Exception)
@@ -169,7 +177,7 @@ namespace BaikeAsp.Controllers
             }
             try
             {
-                favouriteReposity.deleteUsersFollowByID((int)uid, unFollowID);
+                await favouriteReposity.deleteUsersFollowByID((int)uid, unFollowID);
                 await favouriteReposity.SaveAsync();
             }
             catch (Exception)
@@ -182,15 +190,33 @@ namespace BaikeAsp.Controllers
         [HttpGet("aboutHis/{oID}")]
         public async Task<ActionResult> getOUserInfomation([FromRoute] int oID)
         {
+            BKHeadInfoViewModel bkHeadInfoViewModel = new BKHeadInfoViewModel();
             try
             {
-                BKUserInfoViewModel bkUserInfo = await userInfoReposity.GetBkUserInfo(oID);
-                return Ok(CommonResult.Success(bkUserInfo, "Search Success"));
+                BKUserInfoViewModel bkUserInfoViewModel = await userInfoReposity.GetBkUserInfo(oID);
+                int uploadVideoNum = await interactiveVideoReposity.getUploadVideoNum(oID);
+                int favVideoNum = await collectionReposity.getFavVideoNum(oID);
+                int userFollowerNum = await favouriteReposity.getUserFollowerNum(oID);
+                int usersFollowNum = await favouriteReposity.getUsersFollowNum(oID);
+
+                //bkHeadInfoViewModel.iconURL = bkUserInfoViewModel.iconURL;
+                //bkHeadInfoViewModel.state = bkUserInfoViewModel.state;
+                //bkHeadInfoViewModel.introduction = bkUserInfoViewModel.introduction;
+                //bkHeadInfoViewModel.backgroundIconURL = bkUserInfoViewModel.backgroundIconURL;
+                //bkHeadInfoViewModel.nickName = bkUserInfoViewModel.nickName;
+                //bkHeadInfoViewModel.uID = bkUserInfoViewModel.uID;
+                bkHeadInfoViewModel.U = bkUserInfoViewModel;
+
+                bkHeadInfoViewModel.uploadVideoNum = uploadVideoNum;
+                bkHeadInfoViewModel.favVideoNum = favVideoNum;
+                bkHeadInfoViewModel.userFollowerNum = userFollowerNum;
+                bkHeadInfoViewModel.usersFollowNum = usersFollowNum;
             }
             catch (Exception)
             {
                 return Ok(CommonResult.Fail("Unknown Error"));
             }
+            return Ok(CommonResult.Success(bkHeadInfoViewModel, "Search Success"));
         }
 
         [HttpGet("aboutHis/favVideo/{oID}/{pageNum}")]
@@ -255,7 +281,7 @@ namespace BaikeAsp.Controllers
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Unknown Error"));
+                return Ok(CommonResult.Fail("You have subscribed"));
             }
         }
 
@@ -269,7 +295,7 @@ namespace BaikeAsp.Controllers
             }
             catch (Exception)
             {
-                return Ok(CommonResult.Fail("Unknown Error"));
+                return Ok(CommonResult.Fail("You have collected"));
             }
         }
 
@@ -304,7 +330,7 @@ namespace BaikeAsp.Controllers
             try
 
             {
-                PagedList<BKInteractiveVideoViewModel> result = await interactiveVideoReposity.selectHisVideoByUid((int)uid, pageNum, 5);
+                var result = await interactiveVideoReposity.selectBrowseHistoryByUid((int)uid, pageNum, 5);
                 return Ok(CommonResult.Success(result, "Search Success"));
             }
             catch (Exception)
@@ -316,14 +342,14 @@ namespace BaikeAsp.Controllers
         [HttpDelete("aboutMe/browseHistory/{interVideoID}")]
         public async Task<ActionResult> deleteBrowseHistory([FromRoute] int interVideoID)
         {
-            int? uid = (int)HttpContext.Session.GetInt32("userID");
+            int? uid = HttpContext.Session.GetInt32("userID");
             if (uid == null)
             {
                 return Ok(CommonResult.Fail("Please Login First"));
             }
             try
             {
-                browseHistoryReposity.deleteBrowseHistoryByID((int)uid, interVideoID);
+                await browseHistoryReposity.deleteBrowseHistoryByID((int)uid, interVideoID);
                 await browseHistoryReposity.SaveAsync();
                 return Ok(CommonResult.Success("Update Success"));
             }
@@ -333,87 +359,66 @@ namespace BaikeAsp.Controllers
             }
         }
 
-        //[HttpPost("aboutMe/upload")]
-        //public async Task<ActionResult> coverUpload()
-        //{
+        [HttpPost("aboutMe/upload")]
+        public async Task<ActionResult> coverUpload(
+            [FromForm(Name = "avatar")] IFormFile file,
+            [FromForm(Name = "UserID")] int? uID,
+            [FromForm(Name = "MyIcon")] string IconID)
+        {
+            if (uID == null)
+            {
+                return Ok(CommonResult.Fail("Please Login First"));
+            }
+            string iconPath = Path.Combine(ResourcePath.USER_ICON, uID.ToString());
+            Directory.CreateDirectory(iconPath);
+            // 删除老图
+            if (!IconID.Equals("user_default.jpg"))
+            {
+                System.IO.File.Delete(Path.Combine(ResourcePath.USER_ICON, IconID));
+            }
+            // 放入新图
+            var suffix = Path.GetExtension(file.FileName);
+            var uuid = Guid.NewGuid().ToString().Replace("-", "");
+            using (FileStream fs = System.IO.File.Create($@"{iconPath}\{uuid}{suffix}"))
+            {
+                await file.CopyToAsync(fs);
+                fs.Flush();
+            }
+            // 更新数据库
+            await userInfoReposity.updateUserIconByID((int)uID, $@"{uID}\{uuid}{suffix}");
+            await userInfoReposity.SaveAsync();
+            return Ok("Upload Icon Success");
+        }
 
-        //    var boundary = HeaderUtilities.RemoveQuotes(MediaTypeHeaderValue.Parse(Request.ContentType).Boundary).Value;
-
-        //    var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-
-        //    var section = await reader.ReadNextSectionAsync();
-
-        //    while (section != null)
-        //    {
-        //        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
-        //        if (hasContentDispositionHeader)
-        //        {
-        //            var trustedFileNameForFileStorage = Path.GetRandomFileName();
-        //            await WriteFileAsync(section.Body, Path.Combine(ResourcePath.tempURL, trustedFileNameForFileStorage));
-        //        }
-        //        section = await reader.ReadNextSectionAsync();
-        //    }
-        //    return Created(nameof(FileController), null);
-
-
-
-        //    log.info("play");
-        //    if (UserID == null)
-        //    {
-        //        log.info("no user");
-        //        return ResultFactory.buildFailResult("Please Login First");
-        //    }
-        //    if (!file.isEmpty())
-        //    {
-        //        if (file.getContentType() != null && file.getOriginalFilename() != null)
-        //        {
-        //            String fileName = file.getOriginalFilename();
-        //            String type = fileName.substring(fileName.lastIndexOf("."));
-        //            String uuid = UUID.randomUUID().toString().replace("-", "");
-        //            String path = baseURL + "img" + File.separator + "userIcon" + File.separator + UserID + File.separator + uuid + type;
-        //            File dest = new File(path);
-        //            //判断文件父目录是否存在
-        //            if (!dest.getParentFile().exists())
-        //            {
-        //                dest.getParentFile().mkdir();
-        //            }
-        //            file.transferTo(dest);
-        //            String final_path = UserID + File.separator + uuid + type;
-        //            try
-        //            {
-        //                log.info("start");
-        //                aboutMeMapper.updateUsersIconByID(UserID, final_path);
-        //                if (!IconID.equals("user_default.jpg"))
-        //                {
-        //                    deleteFile(new File(baseURL + "src/resources/img" + File.separator + "userIcon" + File.separator + IconID));
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                return ResultFactory.buildFailResult("Unexpected Error");
-        //            }
-        //            return ResultFactory.buildSuccessResult("Upload Icon Success");
-        //        }
-        //    }
-        //    return ResultFactory.buildFailResult("Upload Icon Fail");
-        //}
-
-
-        //public static async Task<string> WriteFileAsync(Stream stream, string path, int fileSize)
-        //{
-        //    int FILE_WRITE_SIZE = fileSize;
-        //    int writeCount = 0;
-        //    using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Write, FILE_WRITE_SIZE, true))
-        //    {
-        //        byte[] byteArr = new byte[FILE_WRITE_SIZE];
-        //        int readCount = 0;
-        //        while ((readCount = await stream.ReadAsync(byteArr, 0, byteArr.Length)) > 0)
-        //        {
-        //            await fileStream.WriteAsync(byteArr, 0, readCount);
-        //            writeCount += readCount;
-        //        }
-        //    }
-        //    return path;
-        //}
+        [HttpPost("aboutMe/uploadback")]
+        public async Task<ActionResult> BackImgUpload(
+            [FromForm(Name = "backavatar")] IFormFile file,
+            [FromForm(Name = "BackUserID")] int? uID,
+            [FromForm(Name = "BackMyIcon")] string IconID)
+        {
+            if (uID == null)
+            {
+                return Ok(CommonResult.Fail("Please Login First"));
+            }
+            string iconPath = Path.Combine(ResourcePath.USER_ICON, uID.ToString());
+            Directory.CreateDirectory(iconPath);
+            // 删除老图
+            if (!IconID.Equals("back_default.jpg"))
+            {
+                System.IO.File.Delete(Path.Combine(ResourcePath.USER_ICON, IconID.Replace(@"/", @"\")));
+            }
+            // 放入新图
+            var suffix = Path.GetExtension(file.FileName);
+            var uuid = Guid.NewGuid().ToString().Replace("-", "");
+            using (FileStream fs = System.IO.File.Create($@"{iconPath}\{uuid}{suffix}"))
+            {
+                await file.CopyToAsync(fs);
+                fs.Flush();
+            }
+            // 更新数据库
+            await userInfoReposity.updateUserBackgroundIconByID((int)uID, $@"{uID}/{uuid}{suffix}");
+            await userInfoReposity.SaveAsync();
+            return Ok("Upload Icon Success");
+        }
     }
 }

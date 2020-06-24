@@ -16,12 +16,13 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public async void deleteUsersFollowByID(int uid, int followid)
+        public async Task<bool> deleteUsersFollowByID(int uid, int followid)
         {
             BkFavourite bkFavourite = await _context.BkFavourite
                 .Where(x => x.UId.Equals(uid) && x.FavUserId.Equals(followid))
                 .FirstOrDefaultAsync();
             _context.BkFavourite.Remove(bkFavourite);
+            return true;
         }
 
         public async Task<int> getUserFollowerNum(int uid)

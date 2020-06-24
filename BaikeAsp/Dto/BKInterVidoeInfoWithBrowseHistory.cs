@@ -7,7 +7,7 @@ namespace BaikeAsp.Dto
 {
     public class BKInterVidoeInfoWithBrowseHistory
     {
-        public int InterVideoId { get; set; }
+        public int InterVideoID { get; set; }
         public string VideoName { get; set; }
         public string Introduction { get; set; }
         public int PlayVolume { get; set; }

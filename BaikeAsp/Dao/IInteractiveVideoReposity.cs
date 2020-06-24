@@ -19,10 +19,10 @@ namespace BaikeAsp.Dao
         Task<PagedList<BKInterVideoViewModel>> selectByPlayVolume(string title, int state, int pageNum, int pageSize);
         Task<PagedList<BKInterVideoViewModel>> selectByTime(string title, int state, int pageNum, int pageSize);
         Task<PagedList<BKInteractiveVideoViewModel>> selectInterVideosByUserIf(int uid, VideoState state, int pageNum, int pageSize);
-        Task<BKInteractiveVideoViewModel> findVideoPlayPageInfo(int vid);
+        Task<BKVideoPlayVideoModel> findVideoPlayPageInfo(int vid);
         void changeVideoState(int vid);
         void updateInterVideoStartVideo(int intervideoid, int initvideoid);
-        void deleteInteractiveVideoByID(int vid);
+        Task<bool> deleteInteractiveVideoByID(int vid);
         Task<int> selectInterVideoStateByID(int intervideoid);
         Task<int?> selectInitVideoIDByID(int intervideoid);
         int GetVideoCountByUid(int uid);

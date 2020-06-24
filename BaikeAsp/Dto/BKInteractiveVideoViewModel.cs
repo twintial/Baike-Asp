@@ -15,7 +15,7 @@ namespace BaikeAsp.Dto
 
         public string tag { get; set; }
 
-        public int uID { get; set; }
+        public int uid { get; set; }
 
         public int playVolume { get; set; }
 
