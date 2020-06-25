@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="resources\img\userIcon\" />
     <Folder Include="resources\img\videoCover\" />
     <Folder Include="resources\temp\" />
@@ -30,6 +36,17 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CLRForBaike">
+      <HintPath>..\..\CLRForBaike\x64\Release\CLRForBaike.dll</HintPath>
+    </Reference>
+    <Reference Include="ResourceResult">
+      <HintPath>..\..\ResourceResult.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Import Project="..\SharedProjectForBaike\SharedProjectForBaike.projitems" Label="Shared" />
 
 
 </Project>

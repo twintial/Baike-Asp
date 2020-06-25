@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaikeAsp", "BaikeAsp\BaikeAsp.csproj", "{6B2E730E-C2E2-4A28-A6B5-37F3CD16888F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaikeAsp", "BaikeAsp\BaikeAsp.csproj", "{6B2E730E-C2E2-4A28-A6B5-37F3CD16888F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedProjectForBaike", "SharedProjectForBaike\SharedProjectForBaike.shproj", "{10A54B9C-E0B8-4B93-8480-7CFED9C91919}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedProjectForBaike\SharedProjectForBaike.projitems*{10a54b9c-e0b8-4b93-8480-7cfed9c91919}*SharedItemsImports = 13
+		SharedProjectForBaike\SharedProjectForBaike.projitems*{6b2e730e-c2e2-4a28-a6b5-37f3cd16888f}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

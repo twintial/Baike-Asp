@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using CLRForBaike;
 
 namespace BaikeAsp.Controllers
 {
@@ -71,21 +72,21 @@ namespace BaikeAsp.Controllers
         [HttpPost("video/upload")]
         public async Task<IActionResult> VideoUpload([FromForm(Name = "file")] IFormFile file)
         {
-            var result = await FileUtil.CreateTempFile(file);
+            var result = await BaikeAsp.Util.FileUtil.CreateTempFile(file);
             return StatusCode(200, result);
         }
 
         [HttpPost("cover/upload")]
         public async Task<IActionResult> CoverUpload([FromForm(Name = "videoCover")] IFormFile file)
         {
-            var result = await FileUtil.CreateTempFile(file);
+            var result = await BaikeAsp.Util.FileUtil.CreateTempFile(file);
             // 用用看这种形式
             return StatusCode(200, result);
         }
         [HttpDelete("upload/{uuid}/{type}")]
         public IActionResult DeleteTemp(string uuid, string type)
         {
-            bool success = FileUtil.DeleteTempFile($@"{Path.Combine(ResourcePath.TEMP, $@"{uuid}.{type}")}");
+            bool success = CLRForBaike.FileUtil.DeleteTempFile($@"{Path.Combine(ResourcePath.TEMP, $@"{uuid}.{type}")}");
             return StatusCode(200, success);
         }
         [HttpPost("video/submit")]

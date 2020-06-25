@@ -1,10 +1,9 @@
 ﻿using BaikeAsp.Common;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using CLRForBaike;
 
 namespace BaikeAsp.Util
 {
@@ -12,7 +11,6 @@ namespace BaikeAsp.Util
     {
         public async static Task<ResourceResult> CreateTempFile(IFormFile file)
         {
-            ResourceResult result = new ResourceResult();
             var suffix = Path.GetExtension(file.FileName);
             var uuid = Guid.NewGuid().ToString().Replace("-", "");
             using (FileStream fs = File.Create($@"{ResourcePath.TEMP}\{uuid}{suffix}"))
@@ -20,20 +18,21 @@ namespace BaikeAsp.Util
                 await file.CopyToAsync(fs);
                 fs.Flush();
             }
-            result.uuid = uuid.ToString();
-            result.Success = true;
-            result.type = suffix.Replace(".", "");
-            return result;
+            //ResourceResult result = new ResourceResult();
+            //result.uuid = uuid.ToString();
+            //result.Success = true;
+            //result.type = suffix.Replace(".", "");
+            return CLRForBaike.FileUtil.GetRResult(uuid, suffix);
         }
 
-        public static bool DeleteTempFile(string path)
-        {
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-                return true;
-            }
-            return false;
-        }
+        //public static bool DeleteTempFile(string path)
+        //{
+        //    if (File.Exists(path))
+        //    {
+        //        File.Delete(path);
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

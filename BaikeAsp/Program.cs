@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using CLRForBaike;
 
 namespace BaikeAsp
 {
@@ -13,6 +14,13 @@ namespace BaikeAsp
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(ResourcePath.ROOT);
+            Console.WriteLine(ResourcePath.IMG);
+            Console.WriteLine(ResourcePath.TEMP);
+            Console.WriteLine(ResourcePath.USER_ICON);
+            Console.WriteLine(ResourcePath.VIDEO);
+            Console.WriteLine(ResourcePath.VIDEO_COVER);
+
             CreateHostBuilder(args).Build().Run();
         }
 

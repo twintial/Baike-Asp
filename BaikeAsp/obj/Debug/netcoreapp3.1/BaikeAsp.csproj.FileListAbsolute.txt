@@ -146,7 +146,6 @@ D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\ru\Microsoft.Co
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\projects\vsProjects\BaikeAsp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csprojAssemblyReference.cache
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\AutoMapper.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Debug.dll
@@ -306,3 +305,6 @@ C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\bin\Debug\netcoreapp3.1\runtimes\win\l
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csproj.CoreCompileInputs.cache
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csproj.CopyComplete
+D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\CLRForBaike.dll
+D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\ResourceResult.dll
+D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\CLRForBaike.pdb

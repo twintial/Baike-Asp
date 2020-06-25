@@ -7,6 +7,7 @@ using BaikeAsp.Util;
 using BaikeAsp.Common;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using CLRForBaike;
 
 namespace BaikeAsp.Controllers
 {

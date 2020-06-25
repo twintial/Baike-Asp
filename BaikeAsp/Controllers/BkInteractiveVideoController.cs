@@ -16,6 +16,7 @@ using System.Security.Principal;
 using System.Security.Cryptography.Xml;
 using System.Security.Policy;
 using System.IO;
+using CLRForBaike;
 
 namespace BaikeAsp.Controllers
 {
@@ -67,11 +68,11 @@ namespace BaikeAsp.Controllers
         {
             try
             {
-                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
+                if (!CLRForBaike.FileUtil.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO_COVER, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Cover Delete Fail"));
                 }
-                if (!DeleteFile.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
+                if (!CLRForBaike.FileUtil.deleteFile(new DirectoryInfo(Path.Combine(ResourcePath.VIDEO, interVideoID.ToString()))))
                 {
                     return Ok(CommonResult.Fail("Video Delete Fail"));
                 }

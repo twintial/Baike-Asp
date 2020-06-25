@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>10a54b9c-e0b8-4b93-8480-7cfed9c91919</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SharedProjectForBaike</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\BarrageMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\CommonResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Result.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\UserState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\VideoState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKAdminViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKBarrage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKBarrageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKBrowseHistoryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKCollectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKCommentsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BkHeadInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKInteractiveVideoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKInterVideoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKInterVidoeInfoWithBrowseHistory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKLoginInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKNextVideoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKRegisterInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKSearchInterVideo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKSearchUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKSearchUserByAdministrationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKSearchUserListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKSearchVideoListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKUpdateUserInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKUserFollowersDto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKUserInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKUserState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKVideoPlayVideoModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKVideoUploadViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\BKVideoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dto\CommentViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaikeContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkAdmin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkBarrage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkBrowseHistory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkComments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkFavourite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkInteractiveVideo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkNextVideo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkUserInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BkVideo.cs" />
+  </ItemGroup>
+</Project>
