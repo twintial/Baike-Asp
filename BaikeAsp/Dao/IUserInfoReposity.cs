@@ -21,5 +21,7 @@ namespace BaikeAsp.Dao
         Task<PagedList<BKUserState>> selectByName(string title, int state, int pageNum, int pageSize);
         Task<PagedList<BKUserState>> selectByTime(string title, int state, int pageNum, int pageSize);
         void changeUserState(int uid);
+
+        bool Save();
     }
 }

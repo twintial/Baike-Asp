@@ -122,11 +122,11 @@ namespace BaikeAsp.Dao.Impl
             return await PagedList<BKUserState>.Create(query, pageNum, pageSize);
         }
 
-        public async void changeUserState(int uid)
+        public void changeUserState(int uid)
         {
-            BkUserInfo userInfo = await _context.BkUserInfo
+            BkUserInfo userInfo = _context.BkUserInfo
                 .Where(x => x.UId.Equals(uid))
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             userInfo.State = 1 - userInfo.State;
 
@@ -155,6 +155,11 @@ namespace BaikeAsp.Dao.Impl
 
             _context.Entry(userInfo).State = EntityState.Modified;
             return true;
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() >= 0;
         }
     }
 }

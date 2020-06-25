@@ -22,15 +22,16 @@ namespace BaikeAsp.Dao.Impl
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public async void changeVideoState(int vid)
+        public void changeVideoState(int vid)
         {
-            BkInteractiveVideo bkInteractiveVideo = await _context.BkInteractiveVideo
+            BkInteractiveVideo bkInteractiveVideo = _context.BkInteractiveVideo
                                                         .Where(x => x.InterVideoId.Equals(vid))
-                                                        .FirstOrDefaultAsync();
+                                                        .FirstOrDefault();
 
             bkInteractiveVideo.State = 2 - bkInteractiveVideo.State;
 
             _context.Entry(bkInteractiveVideo).State = EntityState.Modified;
+
         }
 
         public async Task<int> getUploadVideoNum(int uid)
@@ -77,7 +78,7 @@ namespace BaikeAsp.Dao.Impl
                                 praisePoint = st.PraisePoint,
                                 collectPoint = st.CollectPoint,
                                 state = st.State,
-                                uploadTime = st.UploadTime,
+                                uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                                 icon = st.Icon,
                                 initVideoID = st.InitVideoId
                             }
@@ -104,7 +105,7 @@ namespace BaikeAsp.Dao.Impl
                                  praisePoint = st.PraisePoint,
                                  collectPoint = st.CollectPoint,
                                  state = st.State,
-                                 uploadTime = st.UploadTime,
+                                 uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                                  icon = st.Icon,
                                  initVideoID = st.InitVideoId
                              }
@@ -117,7 +118,7 @@ namespace BaikeAsp.Dao.Impl
         {
             var query = (from st in _context.BkInteractiveVideo
                          where st.State.Equals(state) && st.VideoName.Contains(title)
-                         orderby st.UploadTime descending
+                         orderby TimeConvert.ConvertDateTimeToLong(st.UploadTime) descending
                          select new BKInterVideoViewModel
                          {
                              bkInteractiveVideo = new BKInteractiveVideoViewModel
@@ -131,7 +132,7 @@ namespace BaikeAsp.Dao.Impl
                                  praisePoint = st.PraisePoint,
                                  collectPoint = st.CollectPoint,
                                  state = st.State,
-                                 uploadTime = st.UploadTime,
+                                 uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                                  icon = st.Icon,
                                  initVideoID = st.InitVideoId
                              }
@@ -156,7 +157,7 @@ namespace BaikeAsp.Dao.Impl
                              praisePoint = st.PraisePoint,
                              collectPoint = st.CollectPoint,
                              state = st.State,
-                             uploadTime = st.UploadTime,
+                             uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                              icon = st.Icon,
                              initVideoID = st.InitVideoId
                          });
@@ -179,7 +180,7 @@ namespace BaikeAsp.Dao.Impl
                              praisePoint = st.PraisePoint,
                              collectPoint = st.CollectPoint,
                              state = st.State,
-                             uploadTime = st.UploadTime,
+                             uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                              icon = st.Icon,
                              initVideoID = st.InitVideoId
                          });
@@ -385,7 +386,7 @@ namespace BaikeAsp.Dao.Impl
                              praisePoint = st.PraisePoint,
                              collectPoint = st.CollectPoint,
                              state = st.State,
-                             uploadTime = st.UploadTime,
+                             uploadTime = TimeConvert.ConvertDateTimeToLong(st.UploadTime),
                              icon = st.Icon,
                              initVideoID = st.InitVideoId
                          });
@@ -477,7 +478,7 @@ namespace BaikeAsp.Dao.Impl
                 praisePoint = bkInteractiveVideo.PraisePoint,
                 collectPoint = bkInteractiveVideo.CollectPoint,
                 state = bkInteractiveVideo.State,
-                uploadTime = bkInteractiveVideo.UploadTime,
+                uploadTime = TimeConvert.ConvertDateTimeToLong(bkInteractiveVideo.UploadTime),
                 icon = bkInteractiveVideo.Icon,
                 initVideoID = bkInteractiveVideo.InitVideoId,
                 initVideo = bKVideoViewModel,

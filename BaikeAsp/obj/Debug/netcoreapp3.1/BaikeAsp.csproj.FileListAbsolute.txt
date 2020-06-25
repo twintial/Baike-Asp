@@ -308,3 +308,4 @@ C:\Users\19134\Desktop\Baike-Asp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.cspro
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\CLRForBaike.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\ResourceResult.dll
 D:\projects\vsProjects\BaikeAsp\BaikeAsp\bin\Debug\netcoreapp3.1\CLRForBaike.pdb
+D:\projects\vsProjects\BaikeAsp\BaikeAsp\obj\Debug\netcoreapp3.1\BaikeAsp.csprojAssemblyReference.cache

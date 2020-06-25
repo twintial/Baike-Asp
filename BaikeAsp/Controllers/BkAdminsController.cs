@@ -148,12 +148,12 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPut("ChangeUserState/{id}")]
-        public async void ChangeUserState([FromRoute] int id)
+        public void ChangeUserState([FromRoute] int id)
         {
             try
             {
                 userInfoReposity.changeUserState(id);
-                await userInfoReposity.SaveAsync();
+                userInfoReposity.Save();
             }
             catch (Exception)
             {
@@ -162,12 +162,12 @@ namespace BaikeAsp.Controllers
         }
 
         [HttpPut("ChangeVideoState/{id}")]
-        public async void ChangeVideoState([FromRoute] int id)
+        public void ChangeVideoState([FromRoute] int id)
         {
             try
             {
                 interactiveVideoReposity.changeVideoState(id);
-                await interactiveVideoReposity.SaveAsync();
+                interactiveVideoReposity.Save();
             }
             catch (Exception)
             {

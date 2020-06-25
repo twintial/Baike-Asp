@@ -25,7 +25,7 @@ namespace BaikeAsp.Dto
 
         public int state { get; set; }
 
-        public DateTime uploadTime { get; set; }
+        public long uploadTime { get; set; }
 
         public string icon { get; set; }
 
